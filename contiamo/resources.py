@@ -1,9 +1,10 @@
-from http_client import HTTPClient
+from .http_client import HTTPClient
+from .utils import logger
 
 
 def CreateNestedResource(base_class, parent, **kwargs):
   class_name = type(parent).__name__ + base_class.__name__.rstrip('Resource')
-  print(class_name)
+  logger.debug(class_name)
   properties = {'parent': parent}
   properties.update(kwargs)
   return type(class_name, (base_class,), properties)

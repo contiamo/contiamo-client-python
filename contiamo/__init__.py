@@ -1,1 +1,1 @@
-from contiamo.client import Client
+from contiamo import resources, public, data
