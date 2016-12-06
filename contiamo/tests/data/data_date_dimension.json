@@ -1,0 +1,83 @@
+{
+  "rows": [
+    [
+      "2015-12-09",
+      "2013Q03",
+      1.0
+    ],
+    [
+      "2015-12-09",
+      "2014Q02",
+      1.0
+    ],
+    [
+      "2015-12-09",
+      "2015Q01",
+      1.0
+    ],
+    [
+      "2015-12-09",
+      "2015Q02",
+      2.0
+    ],
+    [
+      "2015-12-09",
+      "2015Q03",
+      5.0
+    ],
+    [
+      "2015-12-09",
+      "2015Q04",
+      25.0
+    ]
+  ],
+  "query": {
+    "end_date": "2015-12-09",
+    "start_date": "2015-12-09",
+    "interval": "day",
+    "calculations": [],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570510:number_of_sales"
+      }
+    ],
+    "dimensions": [
+      "user_first_purchase_date-quarter"
+    ]
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2015-12-09",
+      "end_date": "2015-12-09"
+    },
+    {
+      "column_type": "dimension",
+      "key": "user_first_purchase_date-quarter",
+      "data_type": "date",
+      "supports_regex": true,
+      "name": "First purchase quarter",
+      "category": "First purchase date",
+      "description": "Quarter of first purchase",
+      "period": "quarter"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "No. of orders",
+      "summable": true,
+      "unit": "number",
+      "category": "Orders",
+      "popular": false,
+      "description": "Number of orders",
+      "data_type": "numeric",
+      "key": "666570510:number_of_sales"
+    }
+  ]
+}

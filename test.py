@@ -1,4 +1,4 @@
-# import contiamo
+import contiamo
 
 # import contiamo.resources
 # import contiamo.public

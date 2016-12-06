@@ -1,0 +1,70 @@
+{
+  "rows": [
+    [
+      "2015-12-03",
+      7447.0
+    ],
+    [
+      "2015-12-04",
+      7489.0
+    ],
+    [
+      "2015-12-05",
+      5814.0
+    ],
+    [
+      "2015-12-06",
+      6225.0
+    ],
+    [
+      "2015-12-07",
+      7750.0
+    ],
+    [
+      "2015-12-08",
+      8072.0
+    ],
+    [
+      "2015-12-09",
+      11168.0
+    ]
+  ],
+  "query": {
+    "end_date": "2015-12-09",
+    "start_date": "2015-12-03",
+    "interval": "day",
+    "calculations": [],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570819:new_users",
+        "stats": []
+      }
+    ],
+    "dimensions": []
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2015-12-03",
+      "end_date": "2015-12-09"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "New Users",
+      "summable": true,
+      "unit": "number",
+      "category": "User",
+      "popular": true,
+      "description": "The number of users whose session was marked as a first-time session.",
+      "data_type": "numeric",
+      "key": "666570819:new_users"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "rows": [
+    [
+      "2015W48",
+      57969.0
+    ],
+    [
+      "2015W49",
+      50401.0
+    ]
+  ],
+  "query": {
+    "end_date": "2015W49",
+    "start_date": "2015W48",
+    "interval": "week",
+    "calculations": [],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570819:new_users",
+        "stats": []
+      }
+    ],
+    "dimensions": []
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:week",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "week",
+      "start_date": "2015W48",
+      "end_date": "2015W49"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "New Users",
+      "summable": true,
+      "unit": "number",
+      "category": "User",
+      "popular": true,
+      "description": "The number of users whose session was marked as a first-time session.",
+      "data_type": "numeric",
+      "key": "666570819:new_users"
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "rows": [
+    [
+      115654.0,
+      1156540.0
+    ]
+  ],
+  "query": {
+    "end_date": "2015-12-10",
+    "start_date": "2015-12-04",
+    "interval": "none",
+    "calculations": [
+      {
+        "name": "Calculation",
+        "formula": "666570819:pageviews*10",
+        "key": "bt1dqxaz"
+      }
+    ],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570819:pageviews"
+      }
+    ],
+    "dimensions": []
+  },
+  "columns": [
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Pageviews",
+      "summable": true,
+      "unit": "number",
+      "category": "Page Tracking",
+      "popular": true,
+      "description": "The total number of pageviews for your property.",
+      "data_type": "numeric",
+      "key": "666570819:pageviews"
+    },
+    {
+      "column_type": "metric",
+      "column_subtype": "calculation",
+      "name": "Calculation",
+      "summable": true,
+      "formula": "666570819:pageviews*10",
+      "unit": "number",
+      "data_type": "numeric",
+      "key": "calculation:bt1dqxaz"
+    }
+  ]
+}

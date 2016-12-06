@@ -1,0 +1,192 @@
+{
+  "rows": [
+    [
+      "2015-12-03",
+      "Direct",
+      1643.0
+    ],
+    [
+      "2015-12-03",
+      "Organic Search",
+      5186.0
+    ],
+    [
+      "2015-12-03",
+      "Referral",
+      611.0
+    ],
+    [
+      "2015-12-03",
+      "Social",
+      7.0
+    ],
+    [
+      "2015-12-04",
+      "Direct",
+      1630.0
+    ],
+    [
+      "2015-12-04",
+      "Organic Search",
+      5292.0
+    ],
+    [
+      "2015-12-04",
+      "Referral",
+      563.0
+    ],
+    [
+      "2015-12-04",
+      "Social",
+      4.0
+    ],
+    [
+      "2015-12-05",
+      "Direct",
+      1552.0
+    ],
+    [
+      "2015-12-05",
+      "Organic Search",
+      3804.0
+    ],
+    [
+      "2015-12-05",
+      "Referral",
+      455.0
+    ],
+    [
+      "2015-12-05",
+      "Social",
+      3.0
+    ],
+    [
+      "2015-12-06",
+      "Direct",
+      1665.0
+    ],
+    [
+      "2015-12-06",
+      "Organic Search",
+      4071.0
+    ],
+    [
+      "2015-12-06",
+      "Social",
+      0.0
+    ],
+    [
+      "2015-12-06",
+      "Referral",
+      489.0
+    ],
+    [
+      "2015-12-07",
+      "Direct",
+      1738.0
+    ],
+    [
+      "2015-12-07",
+      "Organic Search",
+      5412.0
+    ],
+    [
+      "2015-12-07",
+      "Referral",
+      599.0
+    ],
+    [
+      "2015-12-07",
+      "Social",
+      1.0
+    ],
+    [
+      "2015-12-08",
+      "Direct",
+      1771.0
+    ],
+    [
+      "2015-12-08",
+      "Organic Search",
+      5704.0
+    ],
+    [
+      "2015-12-08",
+      "Social",
+      17.0
+    ],
+    [
+      "2015-12-08",
+      "Referral",
+      580.0
+    ],
+    [
+      "2015-12-09",
+      "Direct",
+      2564.0
+    ],
+    [
+      "2015-12-09",
+      "Organic Search",
+      8016.0
+    ],
+    [
+      "2015-12-09",
+      "Referral",
+      577.0
+    ],
+    [
+      "2015-12-09",
+      "Social",
+      11.0
+    ]
+  ],
+  "query": {
+    "end_date": "2015-12-09",
+    "start_date": "2015-12-03",
+    "interval": "day",
+    "calculations": [],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570819:new_users"
+      }
+    ],
+    "dimensions": [
+      "channel_grouping"
+    ]
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2015-12-03",
+      "end_date": "2015-12-09"
+    },
+    {
+      "column_type": "dimension",
+      "key": "channel_grouping",
+      "data_type": "string",
+      "supports_regex": true,
+      "name": "Default Channel Grouping",
+      "category": "Channel Grouping",
+      "description": "The default channel grouping that is shared within the View (Profile)."
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "New Users",
+      "summable": true,
+      "unit": "number",
+      "category": "User",
+      "popular": true,
+      "description": "The number of users whose session was marked as a first-time session.",
+      "data_type": "numeric",
+      "key": "666570819:new_users"
+    }
+  ]
+}

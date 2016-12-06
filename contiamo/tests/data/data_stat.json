@@ -1,0 +1,91 @@
+{
+  "rows": [
+    [
+      "2015-12-04",
+      17562.0,
+      17562.0
+    ],
+    [
+      "2015-12-05",
+      14564.0,
+      15963.066667
+    ],
+    [
+      "2015-12-06",
+      15610.0,
+      15829.360947
+    ],
+    [
+      "2015-12-07",
+      19178.0,
+      16840.867257
+    ],
+    [
+      "2015-12-08",
+      19302.0,
+      17472.456738
+    ],
+    [
+      "2015-12-09",
+      22208.0,
+      18546.364359
+    ],
+    [
+      "2015-12-10",
+      7231.0,
+      16217.349037
+    ]
+  ],
+  "query": {
+    "end_date": "2015-12-10",
+    "start_date": "2015-12-04",
+    "interval": "day",
+    "calculations": [],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570819:pageviews",
+        "stats": [
+          "exponential_moving_average"
+        ]
+      }
+    ],
+    "dimensions": []
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2015-12-04",
+      "end_date": "2015-12-10"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Pageviews",
+      "summable": true,
+      "unit": "number",
+      "category": "Page Tracking",
+      "popular": true,
+      "description": "The total number of pageviews for your property.",
+      "data_type": "numeric",
+      "key": "666570819:pageviews"
+    },
+    {
+      "column_type": "metric",
+      "column_subtype": "stat",
+      "reference_key": "666570819:pageviews",
+      "interval": "hour",
+      "name": "Pageviews (Exponential Moving Average)",
+      "summable": true,
+      "unit": "number",
+      "stat_type": "exponential_moving_average",
+      "data_type": "numeric",
+      "key": "666570819:pageviews:stat:exponential_moving_average"
+    }
+  ]
+}
