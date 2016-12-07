@@ -2,7 +2,10 @@ import pandas as pd
 
 from .dateparser import DateParser
 from .http_client import HTTPClient
-from .utils import logger, query_url_from_identifier
+from .utils import query_url_from_identifier
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def _parse_json(result, parse_dates=True, use_column_names=True):

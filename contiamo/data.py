@@ -1,7 +1,10 @@
 import tempfile
 
 from .http_client import HTTPClient
-from .utils import logger, contract_url_template_from_identifier
+from .utils import contract_url_template_from_identifier
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 class DataClient:

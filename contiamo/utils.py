@@ -1,11 +1,5 @@
-import logging
 import pandas as pd
 
-
-###
-# logger
-logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger('contiamo')
 
 ###
 # parse query id

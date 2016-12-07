@@ -1,5 +1,7 @@
 from .http_client import HTTPClient
-from .utils import logger
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 def CreateNestedResource(base_class, parent, **kwargs):
