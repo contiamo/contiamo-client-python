@@ -4,16 +4,18 @@ import contiamo
 # import contiamo.public
 # import contiamo.data
 
-# # Authenticated access
-# contiamo_client = contiamo.resources.Client('Jvzbw4E9yQ7yzYvow7FU', api_base='http://localhost:3000/api')
+# Authenticated access
+contiamo_client = contiamo.resources.Client('Jvzbw4E9yQ7yzYvow7FU', api_base='http://localhost:3000/api')
 
-# # Project methods
-# print('### Getting project')
-# project = contiamo_client.Project.retrieve('48590121')
+# Project methods
+print('### Getting project')
+project = contiamo_client.Project.retrieve('48590121')
 
 # # Apps
-# print('### Getting apps')
-# print(project.App.list()[:2])
+print('### Getting apps')
+apps = project.App.list(instantiate=True)
+print(type(apps[0]))
+print(apps[:2])
 
 # # Dashboards
 # print('### Getting dashboards')
@@ -21,8 +23,8 @@ import contiamo
 # dashboard = project.Dashboard.retrieve(dashboards[0]['id'])
 # print(dashboard)
 
-print('### Getting query data')
-print(contiamo.public.query('query:olap:48590121:25612:FL2fmx8_XJ_Rx6EbZvoq2s6bPzTXaxPTMWKxSs_A8Bk'))
+# print('### Getting query data')
+# print(contiamo.public.query('query:olap:48590121:25612:FL2fmx8_XJ_Rx6EbZvoq2s6bPzTXaxPTMWKxSs_A8Bk'))
 
 # print('### Sending data to contract')
 # contract_id = 'contract:48590121:666570779:test4'

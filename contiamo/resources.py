@@ -39,7 +39,7 @@ class Resource(dict):
     self.id = id
     self._init_nested_resources()
 
-  def _init_nested_resources():
+  def _init_nested_resources(self):
     pass
 
   @classmethod
@@ -60,9 +60,18 @@ class Resource(dict):
     return '%s/%s' % (self.class_url(), self.id)
 
   @classmethod
-  def list(cls):
+  def list(cls, instantiate=False):
     response = cls.client().request('get', cls.class_url())
-    return response.json()
+    result = response.json()
+    if instantiate:
+      resources = []
+      for resource in result:
+        resource_instance = cls(resource['id'])
+        resource_instance.update(resource)
+        resources.append(resource_instance)
+      return resources
+    else:
+      return result
 
   @classmethod
   def retrieve(cls, id):
