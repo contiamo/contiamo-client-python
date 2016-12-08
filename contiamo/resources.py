@@ -1,12 +1,13 @@
 from .http_client import HTTPClient
 
+from contiamo import errors
+
 import logging
 logger = logging.getLogger(__name__)
 
 
 def CreateNestedResource(base_class, parent, **kwargs):
   class_name = type(parent).__name__ + base_class.__name__.rstrip('Resource')
-  logger.debug(class_name)
   properties = {'parent': parent}
   properties.update(kwargs)
   return type(class_name, (base_class,), properties)
@@ -34,8 +35,9 @@ class Client:
 # Base resource class
 ###
 class Resource(dict):
-  parent = None
+  id_attribute = 'id'
   path_segment = None
+  parent = None
 
   def __init__(self, id):
     self.id = id
@@ -57,23 +59,33 @@ class Resource(dict):
       return base_url
 
   def instance_url(self):
-    # if not self.id:
-    #   raise
+    if not self.id:
+      raise errors.InvalidRequestError(
+        'The %s resource was not properly initialized. '
+        'The URL cannot be determined without a valid id.' % type(self).__name__)
     return '%s/%s' % (self.class_url(), self.id)
+
+  @classmethod
+  def instantiate_from_response(cls, response):
+    resource_instance = cls(response[cls.id_attribute])
+    resource_instance.update(response)
+    return resource_instance
+
+  @classmethod
+  def instantiate_list(cls, responses):
+    return [cls.instantiate_from_response(response) for response in responses]
 
   @classmethod
   def list(cls, instantiate=False):
     response = cls.client().request('get', cls.class_url())
-    result = response.json()
+    # TODO: add some error catching...
+    resources = response.json()
+    if type(resources) is dict:
+      resources = resources['resources']
     if instantiate:
-      resources = []
-      for resource in result:
-        resource_instance = cls(resource['id'])
-        resource_instance.update(resource)
-        resources.append(resource_instance)
-      return resources
+      return cls.instantiate_list(resources)
     else:
-      return result
+      return resources
 
   @classmethod
   def retrieve(cls, id):

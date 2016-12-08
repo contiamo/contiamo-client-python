@@ -40,10 +40,11 @@ class ContiamoError(Exception):
 class APIConnectionError(ContiamoError):
   pass
 
+class AuthenticationError(ContiamoError):
+  pass
 
 class APIError(ContiamoError):
   pass
 
-
-class AuthenticationError(ContiamoError):
+class InvalidRequestError(ContiamoError):
   pass
