@@ -59,10 +59,6 @@ class Resource(dict):
       return base_url
 
   def instance_url(self):
-    if not self.id:
-      raise errors.InvalidRequestError(
-        'The %s resource was not properly initialized. '
-        'The URL cannot be determined without a valid id.' % type(self).__name__)
     return '%s/%s' % (self.class_url(), self.id)
 
   @classmethod
@@ -94,7 +90,7 @@ class Resource(dict):
     return instance
 
   def request(self, method):
-    response = self.client().request('get', self.instance_url())
+    response = self.client().request(method, self.instance_url())
     return response.json()
 
 
