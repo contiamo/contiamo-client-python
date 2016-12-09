@@ -1,5 +1,3 @@
-import pandas as pd
-
 
 ###
 # parse query id
