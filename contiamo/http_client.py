@@ -55,6 +55,9 @@ class HTTPClient:
     if is_auth_error:
       raise errors.AuthenticationError(
         'Authentication failed, please check your credentials or contact us if the problem persists: support@contiamo.com\n'
-        'The response from the server was: %s (HTTP error %s)' % (response.text, response.status_code))
+        'The response from the server was: %s (HTTP error %d)' % (response.text, response.status_code),
+        http_body=response.content, http_status=response.status_code, headers=response.headers)
     else:
-      raise errors.APIError('Invalid response from server (HTTP error %s): %s' % (response.status_code, response.text))
+      raise errors.APIError(
+        'Invalid response from server (HTTP error %d): %s' % (response.status_code, response.text),
+        http_body=response.content, http_status=response.status_code, headers=response.headers)
