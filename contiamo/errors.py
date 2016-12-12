@@ -3,6 +3,7 @@ import sys
 
 
 class ContiamoException(Exception):
+  """Base class for the library's errors."""
 
   def __init__(self, message=None, http_body=None, http_status=None, json_body=None, headers=None):
     super().__init__(message)
@@ -25,13 +26,25 @@ class ContiamoException(Exception):
 
 
 class APIConnectionError(ContiamoException):
+  """Basic connection errors such as server not responding."""
   pass
 
 class AuthenticationError(ContiamoException):
+  """Authentication error due to invalid credentials."""
+  pass
+
+class NotFoundError(ContiamoException):
+  """Error raised when resource is not found after successful authentication."""
+  pass
+
+class ResponseError(ContiamoException):
+  """Raised for invalid responses (e.g. invalid JSON); should be rare."""
   pass
 
 class APIError(ContiamoException):
+  """Catch-all error for all other non-200 responses including 500."""
   pass
 
 class InvalidRequestError(ContiamoException):
+  """Invalid request errors caught before sending the request."""
   pass

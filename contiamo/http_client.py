@@ -49,7 +49,7 @@ class HTTPClient:
     logger.error('HTTP error %d: %s' % (response.status_code, response.text))
     is_auth_error = False
     try:
-      is_auth_error = not response.json().get('logged_in')
+      is_auth_error = not response.json()['logged_in']
     except:
       pass
     if is_auth_error:

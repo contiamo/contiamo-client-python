@@ -63,7 +63,10 @@ class Resource(dict):
 
   @classmethod
   def instantiate_from_response(cls, response):
-    resource_instance = cls(response[cls.id_attribute])
+    try:
+      resource_instance = cls(response[cls.id_attribute])
+    except KeyError:
+      self._handle_invalid_response(e)
     resource_instance.update(response)
     return resource_instance
 
@@ -74,10 +77,12 @@ class Resource(dict):
   @classmethod
   def list(cls, instantiate=False):
     response = cls.client().request('get', cls.class_url())
-    # TODO: add some error catching...
-    resources = response.json()
-    if type(resources) is dict:
-      resources = resources['resources']
+    try:
+      resources = response.json()
+      if type(resources) is dict:
+        resources = resources['resources']
+    except (ValueError, KeyError) as e:  # JSONDecodeError inherits from ValueError
+      self._handle_invalid_response(e)
     if instantiate:
       return cls.instantiate_list(resources)
     else:
@@ -92,6 +97,13 @@ class Resource(dict):
   def request(self, method):
     response = self.client().request(method, self.instance_url())
     return response.json()
+
+  @classmethod
+  def _handle_invalid_response(self, e):
+    raise errors.ResponseError(
+      'The response from the server was invalid. Please report the bug to support@contiamo.com\n'
+      'The following %s error was raised when interpreting the response:\n%s' % (type(e).__name__, e),
+      http_body=response.content, http_status=response.status_code, headers=response.headers)
 
 
 ###
