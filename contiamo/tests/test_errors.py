@@ -3,6 +3,7 @@ import responses
 import vcr
 
 from contiamo.resources import *
+from contiamo.public import query
 from contiamo.errors import *
 
 
@@ -25,9 +26,16 @@ class ErrorTestCase(unittest.TestCase):
   @responses.activate
   def test_invalid_response(self):
     responses.add(responses.GET, 'https://api.contiamo.com/48590121/dashboards/345',
-                  body='{"invalid":"json",', status=200, content_type='application/json')
+                  body='{"invalid":"json"', status=200, content_type='application/json')
     with self.assertRaises(ResponseError):
       self._make_erroneous_request('correct_api_key', 'https://api.contiamo.com', '48590121', '345')
+
+  @responses.activate
+  def test_invalid_query_response(self):
+    responses.add(responses.GET, 'https://api.contiamo.com/48590200/stored_query/21237.json',
+                  body='{"invalid":"json"', status=200, content_type='application/json')
+    with self.assertRaises(ResponseError):
+      query('query:olap:48590200:21237:randomquerytoken')
 
 
 if __name__ == '__main__':
