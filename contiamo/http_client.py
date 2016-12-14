@@ -1,3 +1,5 @@
+import json
+
 import requests
 from requests.exceptions import RequestException
 
@@ -14,8 +16,9 @@ class HTTPClient:
     # verify_ssl_certs?
     # self._timeout = timeout
 
-  def request(self, method, url, headers={}, **kwargs):
+  def request(self, method, url, headers={}, payload=None, **kwargs):
     logger.debug('Sending %s request to %s' % (method.upper(), url))
+
     headers.update({'Accept': 'application/json'})
     if self.api_key:
       headers.update({'X-API-TOKEN': self.api_key})
@@ -25,13 +28,13 @@ class HTTPClient:
         method,
         url,
         headers=headers,
-        # data=post_data,
+        json=payload,
         # timeout=self._timeout,
         **kwargs)
     except (TypeError, RequestException) as e:
       self._handle_request_error(e)
 
-    if response.status_code != requests.codes.ok:
+    if response.status_code not in [200, 201]:
       self._handle_api_error(response)
 
     return response

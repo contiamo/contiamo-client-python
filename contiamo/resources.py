@@ -76,13 +76,12 @@ class Resource(dict):
 
   @classmethod
   def list(cls, instantiate=False):
-    response = cls.client().request('get', cls.class_url())
-    try:
-      resources = response.json()
-      if type(resources) is dict:
+    resources = cls.request('get', cls.class_url())
+    if type(resources) is dict:
+      try:
         resources = resources['resources']
-    except (ValueError, KeyError) as e:
-      self._handle_invalid_response(e, response)
+      except KeyError as e:
+        self._handle_invalid_response(e, response)
     if instantiate:
       return cls.instantiate_list(resources)
     else:
@@ -91,15 +90,17 @@ class Resource(dict):
   @classmethod
   def retrieve(cls, id):
     instance = cls(id)
-    instance.update(instance.request('get'))
+    resource = cls.request('get', instance.instance_url())
+    instance.update(resource)
     return instance
 
-  def request(self, method):
-    response = self.client().request(method, self.instance_url())
+  @classmethod
+  def request(cls, method, url):
+    response = cls.client().request(method, url)
     try:
       result = response.json()
     except ValueError as e:  # JSONDecodeError inherits from ValueError
-      self._handle_invalid_response(e, response)
+      cls._handle_invalid_response(e, response)
     return result
 
   @classmethod
@@ -112,6 +113,16 @@ class Resource(dict):
 
 
 ###
+# Mixin classes
+###
+class UpdateableResource(Resource):
+
+  @classmethod
+  def create(cls, model):
+    return cls.client().request('post', cls.class_url(), payload=model)
+
+
+###
 # Resource classes
 ###
 class ProjectResource(Resource):
@@ -121,7 +132,7 @@ class ProjectResource(Resource):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
 
-class DashboardResource(Resource):
+class DashboardResource(UpdateableResource, Resource):
   path_segment = 'dashboards'
 
   def _init_nested_resources(self):
