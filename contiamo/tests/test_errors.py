@@ -53,7 +53,12 @@ class ErrorTestCase(unittest.TestCase):
       make_erroneous_request('{"invalid":"json"', 200)
 
   @responses.activate
-  def test_querry_error(self):
+  def test_data_source_error(self):
+    with self.assertRaises(DataSourceError):
+      make_erroneous_query('{}', 412)
+
+  @responses.activate
+  def test_query_error(self):
     with self.assertRaises(QueryError):
       make_erroneous_query('{}', 410)
     with self.assertRaises(QueryError):
