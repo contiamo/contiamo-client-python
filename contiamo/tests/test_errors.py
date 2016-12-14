@@ -24,6 +24,7 @@ def make_erroneous_query(body, status):
   responses.add(responses.GET, query_url, body=body, status=status, content_type='application/json')
   query(query_id)
 
+
 class ErrorTestCase(unittest.TestCase):
 
   def test_connection_error(self):

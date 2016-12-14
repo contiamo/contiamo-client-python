@@ -104,6 +104,7 @@ class Resource(dict):
 
   @classmethod
   def _handle_invalid_response(self, e, response):
+    logger.error('Invalid JSON response: %s' % response.text)
     raise errors.ResponseError(
       'The response from the server was invalid. Please report the bug to support@contiamo.com\n'
       'The following %s error was raised when interpreting the response:\n%s' % (type(e).__name__, e),
