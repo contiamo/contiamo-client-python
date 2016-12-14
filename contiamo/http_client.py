@@ -13,8 +13,6 @@ class HTTPClient:
 
   def __init__(self, api_key=None):
     self.api_key = api_key
-    # verify_ssl_certs?
-    # self._timeout = timeout
 
   def request(self, method, url, headers={}, payload=None, **kwargs):
     logger.debug('Sending %s request to %s' % (method.upper(), url))
@@ -29,7 +27,6 @@ class HTTPClient:
         url,
         headers=headers,
         json=payload,
-        # timeout=self._timeout,
         **kwargs)
     except (TypeError, RequestException) as e:
       self._handle_request_error(e)

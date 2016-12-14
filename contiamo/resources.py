@@ -95,8 +95,8 @@ class Resource(dict):
     return instance
 
   @classmethod
-  def request(cls, method, url):
-    response = cls.client().request(method, url)
+  def request(cls, method, url, payload=None):
+    response = cls.client().request(method, url, payload=payload)
     try:
       result = response.json()
     except ValueError as e:  # JSONDecodeError inherits from ValueError
@@ -119,7 +119,10 @@ class UpdateableResource(Resource):
 
   @classmethod
   def create(cls, model):
-    return cls.client().request('post', cls.class_url(), payload=model)
+    return cls.request('post', cls.class_url(), payload=model)
+
+  def update(self, model):
+    return self.request('put', self.instance_url(), payload=model)
 
 
 ###
