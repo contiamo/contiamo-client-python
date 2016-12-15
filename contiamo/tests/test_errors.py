@@ -17,7 +17,7 @@ def make_erroneous_request(method, response_body, status, payload=None, **kwargs
   resource, resource_id = instantiate_resource(**kwargs)
 
   url = resource.class_url() if method == 'create' else resource.instance_url()
-  verb = {'retrieve': responses.GET, 'create': responses.POST, 'update': responses.PUT}.get(method)
+  verb = {'retrieve': responses.GET, 'create': responses.POST, 'modify': responses.PUT}.get(method)
   responses.add(verb, url, body=response_body, status=status, content_type='application/json')
 
   argument = payload if payload else resource_id
@@ -31,7 +31,7 @@ def make_erroneous_create(response_body, status, **kwargs):
   make_erroneous_request('create', response_body, status, payload={'name': 'ResourceName'}, **kwargs)
 
 def make_erroneous_update(response_body, status, **kwargs):
-  make_erroneous_request('update', response_body, status, payload={'name': 'AnotherName'}, **kwargs)
+  make_erroneous_request('modify', response_body, status, payload={'name': 'AnotherName'}, **kwargs)
 
 def make_erroneous_query(response_body, status):
   query_id = 'query:olap:48590200:21237:randomquerytoken'

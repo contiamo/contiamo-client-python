@@ -1,5 +1,3 @@
-import json
-
 import requests
 from requests.exceptions import RequestException
 
@@ -16,6 +14,8 @@ class HTTPClient:
 
   def request(self, method, url, headers={}, payload=None, **kwargs):
     logger.debug('Sending %s request to %s' % (method.upper(), url))
+    if payload and logger.isEnabledFor(logging.DEBUG):
+      logger.debug('With payload: ' + str(payload))
 
     headers.update({'Accept': 'application/json'})
     if self.api_key:

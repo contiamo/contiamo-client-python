@@ -1,0 +1,70 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.11.1]
+      X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
+    method: GET
+    uri: https://api.contiamo.com/48590558/dashboards
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA12OUWuDMBhF/0rJs9BqdbSFMdhcyzeWykaKM2NITCJJG3WYWNGx/17d4x7uy+Vw
+        7v38QVqgXeCvAw/VrJJoh/CwKHVr3UIwq4qGtQJ5yLCh6Vzuhu8ZsbyVsp7rhl/yq2ytbmq0izyk
+        mM2tG8xElcxY6SEptPtXOSX/loQsWWfc5BHa8s7Olnz+42+20Yx1VVEzbSZ0WU0etkx9q6kGC2fo
+        McmumMCU05WuISzI3tERgo/gFFKiqiTmIT1Qg4PnKKtgTMgpwmkWHAlVGaHnhMAKn2Gk1duQxOAf
+        R3NJiNBJulfHmK8yko24gp6S9wuOeccPUQ1mZdPhpQfda3FQfpGCfn2CEcePIRhfPFjF7kshAhkV
+        fig4k3fbDfr9ugE9KIxIaAEAAA==
+    headers:
+      Connection: [close]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 15 Dec 2016 15:13:02 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      cache-control: ['max-age=0, private, must-revalidate']
+      status: [200 OK]
+      x-rack-cache: [miss]
+      x-request-id: [b3b8a8f82b380f62ae4846a8ce999fa7]
+      x-runtime: ['0.057055']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.11.1]
+      X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
+    method: GET
+    uri: https://api.contiamo.com/48590558/dashboards
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA12OUWuDMBhF/0rJs9BqdbSFMdhcyzeWykaKM2NITCJJG3WYWNGx/17d4x7uy+Vw
+        7v38QVqgXeCvAw/VrJJoh/CwKHVr3UIwq4qGtQJ5yLCh6Vzuhu8ZsbyVsp7rhl/yq2ytbmq0izyk
+        mM2tG8xElcxY6SEptPtXOSX/loQsWWfc5BHa8s7Olnz+42+20Yx1VVEzbSZ0WU0etkx9q6kGC2fo
+        McmumMCU05WuISzI3tERgo/gFFKiqiTmIT1Qg4PnKKtgTMgpwmkWHAlVGaHnhMAKn2Gk1duQxOAf
+        R3NJiNBJulfHmK8yko24gp6S9wuOeccPUQ1mZdPhpQfda3FQfpGCfn2CEcePIRhfPFjF7kshAhkV
+        fig4k3fbDfr9ugE9KIxIaAEAAA==
+    headers:
+      Connection: [close]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 15 Dec 2016 15:13:02 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      cache-control: ['max-age=0, private, must-revalidate']
+      status: [200 OK]
+      x-rack-cache: [miss]
+      x-request-id: [6dd4e70db38d666dee135c35b40b1776]
+      x-runtime: ['0.076000']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+    status: {code: 200, message: OK}
+version: 1

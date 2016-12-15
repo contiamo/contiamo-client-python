@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: !!binary |
+      eyJsYXlvdXRfdHlwZSI6ICJyZXBvcnQifQ==
+    headers:
+      Accept: [application/json]
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['25']
+      Content-Type: [application/json]
+      User-Agent: [python-requests/2.11.1]
+      X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
+    method: PUT
+    uri: https://api.contiamo.com/48590558/dashboards/2132
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA12OUWuDMBSF/0rJs9DGxmILY7C5loylspHizIvEJJK0UYuJLTr236d7GezhcOHw
+        8d3zBURrrRLetE1xU52bLthBFMMYbqIIbVEAjAS7EK7DADS8VmAHyLCoTOf8QnKny5Z3EgTA8qHt
+        feGH64x06tp2fq5bcfkTbwKguSucH+xEVdw6FQAljf9Xea1+P0lV8d7OHmmc6N1sKeY9MN5GM9bX
+        ZcONndBlPXn4MoPOMIMdPuM7ofmNUDzldGNrjEq692zE4Wd4QozqOk0EYgdmSfgS5TUeU3qKSJaH
+        R8p0Ttk5pXhFznhk9fuQJhgeR3tJqTRpttfHRKxymo+kxndGPy4kEb04RA22K5cNr3ds7kYeNCwz
+        bN6e8UiSJ4QtlI9O84dKylBFJURScLXZxuD7B98fTQ2IAQAA
+    headers:
+      Connection: [close]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json; charset=utf-8]
+      Date: ['Thu, 15 Dec 2016 15:42:34 GMT']
+      Server: [nginx]
+      Strict-Transport-Security: [max-age=31536000]
+      Vary: [Accept-Encoding]
+      cache-control: ['max-age=0, private, must-revalidate']
+      status: [200 OK]
+      x-rack-cache: ['invalidate, pass']
+      x-request-id: [b4c9f757a7c3fb969021330e70fdd960]
+      x-runtime: ['0.119536']
+      x-ua-compatible: ['IE=Edge,chrome=1']
+    status: {code: 200, message: OK}
+version: 1

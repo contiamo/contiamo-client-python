@@ -70,6 +70,12 @@ class Resource(dict):
     resource_instance.update(response)
     return resource_instance
 
+
+###
+# Mixin classes
+###
+class RetrievableResource(Resource):
+
   @classmethod
   def instantiate_list(cls, responses):
     return [cls.instantiate_from_response(response) for response in responses]
@@ -112,17 +118,17 @@ class Resource(dict):
       http_body=response.content, http_status=response.status_code, headers=response.headers)
 
 
-###
-# Mixin classes
-###
 class UpdateableResource(Resource):
 
   @classmethod
   def create(cls, model):
-    return cls.request('post', cls.class_url(), payload=model)
+    response = cls.request('post', cls.class_url(), payload=model)
+    return cls.instantiate_from_response(response)
 
-  def update(self, model):
-    return self.request('put', self.instance_url(), payload=model)
+  def modify(self, model):
+    # need to handle lock version
+    response = self.request('put', self.instance_url(), payload=model)
+    return self.instantiate_from_response(response)
 
 
 ###
@@ -135,14 +141,14 @@ class ProjectResource(Resource):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
 
-class DashboardResource(UpdateableResource, Resource):
+class DashboardResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'dashboards'
 
   def _init_nested_resources(self):
     self.Widget = CreateNestedResource(WidgetResource, parent=self)
 
-class WidgetResource(Resource):
+class WidgetResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'widgets'
 
-class AppResource(Resource):
+class AppResource(RetrievableResource, Resource):
   path_segment = 'apps'
