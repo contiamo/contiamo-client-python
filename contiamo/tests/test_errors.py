@@ -7,21 +7,36 @@ from contiamo.public import query
 from contiamo.errors import *
 
 
-def instantiate_resource(api_key='apikey', api_base='https://api.base', project_id='123', dashboard_id='456'):
+def instantiate_resource(api_key='apikey', api_base='https://api.base', project_id='123', resource_id='456'):
   contiamo_client = Client(api_key, api_base=api_base)
   project = contiamo_client.Project(project_id)
-  dashboard = project.Dashboard(dashboard_id)
-  return (dashboard, dashboard_id)
+  resource = project.Dashboard(resource_id)
+  return (resource, resource_id)
 
-def make_erroneous_request(body, status, **kwargs):
+def make_erroneous_request(method, response_body, status, payload=None, **kwargs):
   resource, resource_id = instantiate_resource(**kwargs)
-  responses.add(responses.GET, resource.instance_url(), body=body, status=status, content_type='application/json')
-  resource.retrieve(resource_id)
 
-def make_erroneous_query(body, status):
+  url = resource.class_url() if method == 'create' else resource.instance_url()
+  verb = {'retrieve': responses.GET, 'create': responses.POST, 'update': responses.PUT}.get(method)
+  responses.add(verb, url, body=response_body, status=status, content_type='application/json')
+
+  argument = payload if payload else resource_id
+  request_method = getattr(resource, method)
+  request_method(argument)
+
+def make_erroneous_retrieve(response_body, status, **kwargs):
+  make_erroneous_request('retrieve', response_body, status, **kwargs)
+
+def make_erroneous_create(response_body, status, **kwargs):
+  make_erroneous_request('create', response_body, status, payload={'name': 'ResourceName'}, **kwargs)
+
+def make_erroneous_update(response_body, status, **kwargs):
+  make_erroneous_request('update', response_body, status, payload={'name': 'AnotherName'}, **kwargs)
+
+def make_erroneous_query(response_body, status):
   query_id = 'query:olap:48590200:21237:randomquerytoken'
   query_url = 'https://api.contiamo.com/48590200/stored_query/21237.json'
-  responses.add(responses.GET, query_url, body=body, status=status, content_type='application/json')
+  responses.add(responses.GET, query_url, body=response_body, status=status, content_type='application/json')
   query(query_id)
 
 
@@ -41,22 +56,37 @@ class ErrorTestCase(unittest.TestCase):
   @responses.activate
   def test_notfound_error(self):
     with self.assertRaises(NotFoundError):
-      make_erroneous_request('{"error":"not_found","logged_in":true}', 404)
+      make_erroneous_retrieve('{"error":"not_found","logged_in":true}', 404)
 
   @responses.activate
   def test_api_error(self):
     with self.assertRaises(APIError):
-      make_erroneous_request('{}', 500)
+      make_erroneous_retrieve('{}', 500)
+
+  @responses.activate
+  def test_create_error(self):
+    with self.assertRaises(UpdateError):
+      make_erroneous_create('{}', 422)
+
+  @responses.activate
+  def test_update_error(self):
+    with self.assertRaises(UpdateError):
+      make_erroneous_update('{}', 409)
+    with self.assertRaises(UpdateError):
+      make_erroneous_update('{}', 422)
 
   @responses.activate
   def test_invalid_response(self):
     with self.assertRaises(ResponseError):
-      make_erroneous_request('{"invalid":"json"', 200)
+      make_erroneous_retrieve('{"invalid":"json"', 200)
+    with self.assertRaises(ResponseError):
+      make_erroneous_query('{"invalid":"json"', 200)
 
   @responses.activate
   def test_data_source_error(self):
     with self.assertRaises(DataSourceError):
       make_erroneous_query('{}', 412)
+    # TODO: add data client error
 
   @responses.activate
   def test_query_error(self):
@@ -64,11 +94,6 @@ class ErrorTestCase(unittest.TestCase):
       make_erroneous_query('{}', 410)
     with self.assertRaises(QueryError):
       make_erroneous_query('{}', 424)
-
-  @responses.activate
-  def test_invalid_query_response(self):
-    with self.assertRaises(ResponseError):
-      make_erroneous_query('{"invalid":"json"', 200)
 
 
 if __name__ == '__main__':
