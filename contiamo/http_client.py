@@ -31,7 +31,7 @@ class HTTPClient:
     except (TypeError, RequestException) as e:
       self._handle_request_error(e)
 
-    if response.status_code not in [200, 201]:
+    if response.status_code < 200 or response.status_code >= 300:
       self._handle_api_error(response)
 
     return response
