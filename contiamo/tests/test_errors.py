@@ -4,7 +4,7 @@ import responses
 from contiamo.resources import *
 from contiamo.public import query
 from contiamo.data import DataClient
-from contiamo.utils import contract_url_template_from_identifier
+from contiamo.utils import query_url_from_identifier, contract_url_template_from_identifier
 from contiamo.errors import *
 
 
@@ -37,7 +37,7 @@ def mock_erroneous_update(response_body, status):
 # public module
 def mock_erroneous_query(response_body, status):
   query_id = 'query:olap:48590200:21237:randomquerytoken'
-  query_url = api_base + '/48590200/stored_query/21237.json'  # strip token parameter
+  query_url, token = query_url_from_identifier(query_id, api_base)
   responses.add(responses.GET, query_url, body=response_body, status=status, content_type='application/json')
   query(query_id, api_base=api_base)
 

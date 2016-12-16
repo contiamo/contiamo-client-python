@@ -8,12 +8,13 @@ class IdentifierToUrl(unittest.TestCase):
 
   # Query URLs
   def test_query_url(self):
-    url = query_url_from_identifier('query:olap:48590200:21237:randomquerytoken', api_base=self.api_base)
-    self.assertEqual(url, self.api_base + '/48590200/stored_query/21237.json?resource_token=randomquerytoken')
+    url, token = query_url_from_identifier('query:olap:48590200:21237:randomquerytoken', api_base=self.api_base)
+    self.assertEqual(url, self.api_base + '/48590200/stored_query/21237.json')
+    self.assertEqual(token, 'randomquerytoken')
 
   def test_sql_query_url(self):
-    url = query_url_from_identifier('query:sql:48590282:146:randomquerytoken', api_base=self.api_base)
-    self.assertEqual(url, self.api_base + '/48590282/stored_sql_query/146.json?resource_token=randomquerytoken')
+    url, token = query_url_from_identifier('query:sql:48590282:146:randomquerytoken', api_base=self.api_base)
+    self.assertEqual(url, self.api_base + '/48590282/stored_sql_query/146.json')
 
   def test_invalid_query_id(self):
     with self.assertRaises(InvalidRequestError):

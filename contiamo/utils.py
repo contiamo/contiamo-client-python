@@ -6,7 +6,7 @@ def _raise_invalid_identifier_error(identifier, e):
 
 ###
 # parse query id
-query_url = '{api_base}/{project_id}/{path_segment}/{query_id}.json?resource_token={token}'
+query_url = '{api_base}/{project_id}/{path_segment}/{query_id}.json'
 
 def query_url_from_identifier(query_identifier, api_base):
   """query:query_type:project_id:query_id:token"""
@@ -15,13 +15,13 @@ def query_url_from_identifier(query_identifier, api_base):
   except ValueError as e:
     _raise_invalid_identifier_error(query_identifier, e)
 
-  return query_url.format(
+  url = query_url.format(
     api_base=api_base,
     project_id=project_id,
     path_segment=('stored_sql_query' if query_type == 'sql' else 'stored_query'),
-    query_id=query_id,
-    token=token
-    )
+    query_id=query_id)
+
+  return url, token
 
 ###
 # parse contract id

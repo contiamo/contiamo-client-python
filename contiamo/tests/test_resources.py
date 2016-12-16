@@ -13,11 +13,11 @@ try:
   project_id = config['project_id']
   dashboard_id = config['dashboard_id']
 except FileNotFoundError:
-  warnings.warn("These tests will be skipped, as they require configuration information that is unavailable.")
+  warnings.warn('These tests will be skipped, as they require configuration information that is unavailable.')
   config = None
 
 
-@unittest.skipIf(not config, "Configuration information is not available.")
+@unittest.skipIf(not config, 'Configuration information is not available.')
 class RequestTestCase(unittest.TestCase):
 
   client = Client(api_key, api_base=api_base)

@@ -20,13 +20,13 @@ try:
   contract_token = config['contract_token']
   query_id = config['query_id']
 except FileNotFoundError:
-  warnings.warn("These tests will be skipped, as they require configuration information that is unavailable.")
+  warnings.warn('These tests will be skipped, as they require configuration information that is unavailable.')
   config = None
 
 data_client = DataClient(contract_id, contract_token, api_base=api_base)
 
 
-@unittest.skipIf(not config, "Configuration information is not available.")
+@unittest.skipIf(not config, 'Configuration information is not available.')
 class RequestsTestCase(unittest.TestCase):
 
   @vcr.use_cassette('tests/cassettes/test_purge.yaml')
@@ -49,6 +49,14 @@ class RequestsTestCase(unittest.TestCase):
     response = data_client.upload(filename='tests/data/mock_data.csv')
     self.assertTrue('status' in response)
     self.assertEqual(response['status'], 'ok')
+
+  @vcr.use_cassette('tests/cassettes/test_query.yaml')
+  def test_query(self):
+    response = query(query_id, api_base=api_base)
+    if pandas:
+      self.assertTrue(isinstance(response, pandas.DataFrame))
+    else:
+      self.assertTrue(isinstance(response, dict))
 
 
 if __name__ == '__main__':
