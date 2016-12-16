@@ -9,6 +9,7 @@ except ImportError:
 
 from contiamo.data import DataClient
 from contiamo.public import query
+from contiamo.errors import InvalidRequestError
 
 import yaml
 import warnings
@@ -57,6 +58,25 @@ class RequestsTestCase(unittest.TestCase):
       self.assertTrue(isinstance(response, pandas.DataFrame))
     else:
       self.assertTrue(isinstance(response, dict))
+
+
+@unittest.skipIf(not config, 'Configuration information is not available.')
+class ErrorsTestCase(unittest.TestCase):
+
+  def test_dataframe(self):
+    df = {'a': [1,2,3], 'b': [4,5,6]}
+    with self.assertRaises(InvalidRequestError):
+      data_client.upload(dataframe=df)
+
+  def test_no_argument(self):
+    with self.assertRaises(InvalidRequestError):
+      data_client.upload()
+
+  @unittest.skipIf(not pandas, 'The pandas package is not available.')
+  def test_two_arguments(self):
+    df = pandas.DataFrame({'a': [1,2,3], 'b': [4,5,6]})
+    with self.assertRaises(InvalidRequestError):
+      data_client.upload(dataframe=df, filename='tests/data/mock_data.csv')
 
 
 if __name__ == '__main__':
