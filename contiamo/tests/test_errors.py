@@ -12,7 +12,7 @@ from contiamo.errors import *
 api_base = 'http://xyz.wrong-domain-name.123'
 resource_id = '456'
 contiamo_client = Client('some_api_key', api_base=api_base)
-project = contiamo_client.Project(project_id='123')
+project = contiamo_client.Project(id='123')
 resource = project.Dashboard(resource_id)
 
 # resources module
