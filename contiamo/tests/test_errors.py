@@ -90,14 +90,16 @@ class ErrorTestCase(unittest.TestCase):
     with self.assertRaises(ResponseError):
       mock_erroneous_retrieve('{"invalid":"json"', 200)
     with self.assertRaises(ResponseError):
+      mock_erroneous_upload('{"invalid":"json"', 200)
+    with self.assertRaises(ResponseError):
       mock_erroneous_query('{"invalid":"json"', 200)
 
   @responses.activate
   def test_data_source_error(self):
     with self.assertRaises(DataSourceError):
-      mock_erroneous_query('{}', 412)
-    with self.assertRaises(DataSourceError):
       mock_erroneous_upload('{}', 412)
+    with self.assertRaises(DataSourceError):
+      mock_erroneous_query('{}', 412)
 
   @responses.activate
   def test_query_error(self):

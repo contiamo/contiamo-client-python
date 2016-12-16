@@ -57,7 +57,7 @@ def query(query_id, parse_dates=True, use_column_names=True, row_limit=10000, ap
 
   try:
     json_response = response.json()
-  except ValueError as e:
+  except ValueError as e:  # JSONDecodeError inherits from ValueError
     _raise_response_error(e, response)
 
   if pd:

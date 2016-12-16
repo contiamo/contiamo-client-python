@@ -110,7 +110,7 @@ class RetrievableResource(Resource):
     return result
 
   @classmethod
-  def _handle_invalid_response(self, e, response):
+  def _handle_invalid_response(cls, e, response):
     logger.error('Invalid JSON response: %s' % response.text)
     raise errors.ResponseError(
       'The response from the server was invalid. Please report the bug to support@contiamo.com\n'

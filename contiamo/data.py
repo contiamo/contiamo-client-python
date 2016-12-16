@@ -1,7 +1,13 @@
 import tempfile
 
+try:
+  import pandas
+except ImportError:
+  pandas = None
+
 from .http_client import HTTPClient
 from .utils import contract_url_template_from_identifier
+from contiamo.errors import InvalidRequestError, ResponseError
 
 import logging
 logger = logging.getLogger(__name__)
@@ -16,14 +22,21 @@ class DataClient:
     self.client = HTTPClient()
 
   def _make_request(self, url, file_object=None):
-    kwargs = {
-      'params': {'access_token': self.token},
-    }
+    kwargs = {'params': {'access_token': self.token}}
     if file_object:
-      kwargs.update({
-        'files': {'file': file_object}
-      })
-    return self.client.request('post', url, **kwargs)
+      kwargs.update({'files': {'file': file_object}})
+
+    response = self.client.request('post', url, **kwargs)
+    try:
+      json_response = response.json()
+    except ValueError as e:  # JSONDecodeError inherits from ValueError
+      logger.error('Invalid JSON response: %s' % response.text)
+      raise ResponseError(
+        'The JSON response from the server was invalid. Please report the bug to support@contiamo.com\n'
+        'The following %s error was raised when parsing the JSON response:\n%s' % (type(e).__name__, e),
+        http_body=response.content, http_status=response.status_code, headers=response.headers)
+
+    return json_response
 
   def post_df(self, url, dataframe, ignore_index=True):
     # workaround until we can upload JSON data
@@ -39,10 +52,14 @@ class DataClient:
     return result
 
   def _post_data(self, url, dataframe, filename, ignore_index):
+    # sanity checks
     if dataframe is None and filename is None:
-      raise Exception('You need to specify at least a dataframe or a file to upload.')
+      raise InvalidRequestError('You need to specify at least a dataframe or a file to upload.')
     if dataframe is not None and filename is not None:
-      raise Exception('Ambiguous request: You cannot provide both a dataframe and a file to upload.')
+      raise InvalidRequestError('Ambiguous request: You cannot provide both a dataframe and a file to upload.')
+    if dataframe is not None and not (pandas and isinstance(dataframe, pandas.DataFrame)):
+      raise InvalidRequestError(
+        'The argument you passed is a %s, not a pandas dataframe:\n%s' % (type(dataframe).__name__, str(dataframe)))
 
     if dataframe is not None:
       return self.post_df(url, dataframe, ignore_index)
