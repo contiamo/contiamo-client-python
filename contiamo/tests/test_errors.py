@@ -108,6 +108,13 @@ class ErrorTestCase(unittest.TestCase):
     with self.assertRaises(QueryError):
       mock_erroneous_query('{}', 424)
 
+  @responses.activate
+  def test_include_error(self):
+    error_message = 'This is an error message.'
+    with self.assertRaises(UpdateError) as cm:
+      mock_erroneous_update('{"error": "%s"}' % error_message, 409)
+    self.assertTrue(error_message in str(cm.exception))
+
 
 if __name__ == '__main__':
   unittest.main()
