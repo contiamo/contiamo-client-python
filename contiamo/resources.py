@@ -1,5 +1,5 @@
-from .http_client import HTTPClient
-from .utils import raise_response_error
+from contiamo.http_client import HTTPClient
+from contiamo.utils import raise_response_error
 
 from contiamo import errors
 

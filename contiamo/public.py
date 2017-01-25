@@ -1,5 +1,5 @@
-from .http_client import HTTPClient
-from .utils import query_url_from_identifier, parse_query_result, raise_response_error
+from contiamo.http_client import HTTPClient
+from contiamo.utils import query_url_from_identifier, parse_query_result, raise_response_error
 
 import logging
 logger = logging.getLogger(__name__)

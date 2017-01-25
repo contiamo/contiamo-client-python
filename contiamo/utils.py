@@ -1,6 +1,6 @@
 try:
   import pandas as pd
-  from .dateparser import DateParser
+  from contiamo.dateparser import DateParser
 except ImportError:
   pd = None
 
@@ -8,7 +8,7 @@ except ImportError:
 ###
 # parse labs ids
 def _raise_invalid_identifier_error(identifier, e):
-  from .errors import InvalidRequestError
+  from contiamo.errors import InvalidRequestError
   raise InvalidRequestError(
     'The identifier "%s" is invalid. The following error was raised.\n'
     '%s: %s' % (identifier, type(e).__name__, e))
@@ -49,7 +49,7 @@ def contract_url_template_from_identifier(contract_identifier, api_base):
 ###
 # parse query response
 def raise_response_error(e, response, logger=None):
-  from .errors import ResponseError
+  from contiamo.errors import ResponseError
   if logger:
     logger.error('Invalid JSON response: %s' % response.text)
   raise ResponseError(

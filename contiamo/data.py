@@ -5,9 +5,9 @@ try:
 except ImportError:
   pandas = None
 
-from .http_client import HTTPClient
-from .utils import contract_url_template_from_identifier, raise_response_error
-from .errors import InvalidRequestError
+from contiamo.http_client import HTTPClient
+from contiamo.utils import contract_url_template_from_identifier, raise_response_error
+from contiamo.errors import InvalidRequestError
 
 import logging
 logger = logging.getLogger(__name__)
