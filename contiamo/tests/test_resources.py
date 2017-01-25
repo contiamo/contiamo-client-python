@@ -1,6 +1,11 @@
 import unittest
 import vcr
 
+try:
+  import pandas
+except ImportError:
+  pandas = None
+
 from contiamo.resources import *
 
 import yaml
@@ -12,6 +17,8 @@ try:
   api_key = config['api_key']
   project_id = config['project_id']
   dashboard_id = config['dashboard_id']
+  app_id = config['app_id']
+  sql_table = config['sql_table']
 except FileNotFoundError:
   warnings.warn('These tests will be skipped, as they require configuration information that is unavailable.')
   config = None
@@ -49,6 +56,12 @@ class RequestTestCase(unittest.TestCase):
     new_layout = 'report'
     response = self.dashboard.modify({'layout_type': new_layout})
     self.assertEqual(response['layout_type'], new_layout)
+
+  @vcr.use_cassette('tests/cassettes/test_sql_query.yaml')
+  def test_sql_query(self):
+    result = self.project.query_sql(app_id, 'select * from %s limit 1;' % sql_table)
+    self.assertEqual(result.loc[0, 'Field a'], 1)
+
 
 if __name__ == '__main__':
   unittest.main()

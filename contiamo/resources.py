@@ -1,5 +1,5 @@
 from contiamo.http_client import HTTPClient
-from contiamo.utils import raise_response_error
+from contiamo.utils import raise_response_error, parse_query_result
 
 from contiamo import errors
 
@@ -154,13 +154,14 @@ class ProjectResource(Resource):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
 
-  def query_sql(self, app_id, sql):
+  def query_sql(self, app_id, sql, parse_dates=True, use_column_names=True):
     payload = {
       'app_data_id': app_id,
       'columns': [],
       'query': sql
     }
-    return self._post(sub_path='/sql_query', payload=payload)
+    json_response = self._post(sub_path='/sql_query', payload=payload)
+    return parse_query_result(json_response, parse_dates=parse_dates, use_column_names=use_column_names)
 
 
 class DashboardResource(RetrievableResource, UpdateableResource, Resource):
