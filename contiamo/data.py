@@ -6,8 +6,8 @@ except ImportError:
   pandas = None
 
 from .http_client import HTTPClient
-from .utils import contract_url_template_from_identifier
-from contiamo.errors import InvalidRequestError, ResponseError
+from .utils import contract_url_template_from_identifier, raise_response_error
+from .errors import InvalidRequestError
 
 import logging
 logger = logging.getLogger(__name__)
@@ -30,11 +30,7 @@ class DataClient:
     try:
       json_response = response.json()
     except ValueError as e:  # JSONDecodeError inherits from ValueError
-      logger.error('Invalid JSON response: %s' % response.text)
-      raise ResponseError(
-        'The JSON response from the server was invalid. Please report the bug to support@contiamo.com\n'
-        'The following %s error was raised when parsing the JSON response:\n%s' % (type(e).__name__, e),
-        http_body=response.content, http_status=response.status_code, headers=response.headers)
+      raise_response_error(e, response, logger)
 
     return json_response
 

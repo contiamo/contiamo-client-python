@@ -1,4 +1,5 @@
 from .http_client import HTTPClient
+from .utils import raise_response_error
 
 from contiamo import errors
 
@@ -65,10 +66,35 @@ class Resource(dict):
   def instantiate_from_response(cls, response):
     try:
       resource_instance = cls(response[cls.id_attribute])
-    except KeyError:
-      self._handle_invalid_response(e, response)
+    except KeyError as e:
+      raise_response_error(e, response, logger)
     resource_instance.update(response)
     return resource_instance
+
+  @classmethod
+  def request(cls, method, url, payload=None):
+    response = cls.client().request(method, url, payload=payload)
+    try:
+      result = response.json()
+    except ValueError as e:  # JSONDecodeError inherits from ValueError
+      raise_response_error(e, response, logger)
+    return result
+
+  def resolve_url(self, url, sub_path):
+    resolved_url = url if url else self.instance_url()
+    if sub_path is not None:
+      resolved_url += '/' + sub_path.strip('/')
+    return resolved_url
+
+  # do not overwrite dict get method
+  def _get(self, url=None, sub_path=None):
+    return self.__class__.request('GET', self.resolve_url(url, sub_path))
+
+  def _post(self, url=None, sub_path=None, payload=None):
+    return self.__class__.request('POST', self.resolve_url(url, sub_path), payload=payload)
+
+  def _put(self, url=None, sub_path=None, payload=None):
+    return self.__class__.request('PUT', self.resolve_url(url, sub_path), payload=payload)
 
 
 ###
@@ -87,7 +113,7 @@ class RetrievableResource(Resource):
       try:
         resources = resources['resources']
       except KeyError as e:
-        self._handle_invalid_response(e, response)
+        raise_response_error(e, response, logger)
     if instantiate:
       return cls.instantiate_list(resources)
     else:
@@ -100,22 +126,9 @@ class RetrievableResource(Resource):
     instance.update(resource)
     return instance
 
-  @classmethod
-  def request(cls, method, url, payload=None):
-    response = cls.client().request(method, url, payload=payload)
-    try:
-      result = response.json()
-    except ValueError as e:  # JSONDecodeError inherits from ValueError
-      cls._handle_invalid_response(e, response)
-    return result
-
-  @classmethod
-  def _handle_invalid_response(cls, e, response):
-    logger.error('Invalid JSON response: %s' % response.text)
-    raise errors.ResponseError(
-      'The response from the server was invalid. Please report the bug to support@contiamo.com\n'
-      'The following %s error was raised when interpreting the response:\n%s' % (type(e).__name__, e),
-      http_body=response.content, http_status=response.status_code, headers=response.headers)
+  def refresh(self):
+    response = self._get()
+    self.update(self.instantiate_from_response(response))
 
 
 class UpdateableResource(Resource):
@@ -127,7 +140,7 @@ class UpdateableResource(Resource):
 
   def modify(self, model):
     # need to handle lock version
-    response = self.request('put', self.instance_url(), payload=model)
+    response = self._put(payload=model)
     return self.instantiate_from_response(response)
 
 
@@ -140,6 +153,15 @@ class ProjectResource(Resource):
   def _init_nested_resources(self):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
+
+  def query_sql(self, app_id, sql):
+    payload = {
+      'app_data_id': app_id,
+      'columns': [],
+      'query': sql
+    }
+    return self._post(sub_path='/sql_query', payload=payload)
+
 
 class DashboardResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'dashboards'
