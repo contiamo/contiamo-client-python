@@ -2,7 +2,7 @@ import unittest
 import json
 import datetime
 
-from contiamo.public import _parse_json as parse_json
+from contiamo.utils import parse_query_result as parse_json
 
 class ParseJsonTestCase(unittest.TestCase):
 

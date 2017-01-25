@@ -62,7 +62,7 @@ class APIError(ContiamoException):
 
 class ResponseError(ContiamoException):
   """Raised for invalid responses (e.g. invalid JSON); should be rare."""
-  default_message = 'The JSON response from the server was invalid. Please report the bug to support@contiamo.com'
+  default_message = 'The response from the server was invalid. Please report the bug to support@contiamo.com'
 
 class InvalidRequestError(ContiamoException):
   """Invalid request errors caught before sending the request."""
