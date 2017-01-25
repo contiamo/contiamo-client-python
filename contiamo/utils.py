@@ -62,9 +62,8 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
     return json_response
 
   df = pd.DataFrame()
-  idx = 0
   try:
-    for c in json_response['columns']:
+    for idx, c in enumerate(json_response['columns']):
       if use_column_names:
         col_name = c.get('name', 'Date')
       else:
@@ -86,7 +85,6 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
         parser = DateParser()
         parser.identifyPeriodUnit(df[col_name][0])
         df[col_name] = df[col_name].map(parser.parse)
-      idx += 1
   except KeyError as e:
     raise_response_error(e, response)
   return df
