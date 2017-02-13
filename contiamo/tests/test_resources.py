@@ -19,6 +19,7 @@ try:
   dashboard_id = config['dashboard_id']
   app_id = config['app_id']
   sql_table = config['sql_table']
+  contract_id = config['contract_id']
 except FileNotFoundError:
   warnings.warn('These tests will be skipped, as they require configuration information that is unavailable.')
   config = None
@@ -60,6 +61,11 @@ class RequestTestCase(unittest.TestCase):
   @vcr.use_cassette('tests/cassettes/test_sql_query.yaml')
   def test_sql_query(self):
     result = self.project.query_sql(app_id, 'select * from %s limit 1;' % sql_table)
+    self.assertEqual(result.loc[0, 'Field a'], 1)
+
+  @vcr.use_cassette('tests/cassettes/test_query_contract.yaml')
+  def test_query_contract(self):
+    result = self.client.query_contract(contract_id, max_rows=1)
     self.assertEqual(result.loc[0, 'Field a'], 1)
 
 

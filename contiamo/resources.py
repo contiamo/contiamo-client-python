@@ -31,6 +31,23 @@ class Client:
   def instance_url(self):
     return self.api_base
 
+  def query_contract(self, labs_id, max_rows=10000):
+    """
+    The labs_id of a contract is available in the manage section for that contract.
+    It is an identifier that begins with 'contract:'.
+    """
+    if max_rows > 100000:
+      raise errors.InvalidRequestError(
+        'The number of rows is limited at 100k. Please contact us if you need to query more data.')
+    try:
+      # truncate id in case token was left in by the user
+      _, project_id, app_id, contract_key = labs_id.split(':')[:4]
+    except ValueError:
+      raise errors.InvalidRequestError('"%s" is not a valid data contract identifier.' % labs_id)
+    project = self.Project(project_id)
+    # deal with negative max_rows silently to avoid misleading authentication failure
+    return project.query_sql(app_id, "select * from contract_%s limit %d;" % (contract_key, max(max_rows, 0)))
+
 
 ###
 # Base resource class
@@ -162,7 +179,6 @@ class ProjectResource(Resource):
     }
     json_response = self._post(sub_path='/sql_query', payload=payload)
     return parse_query_result(json_response, parse_dates=parse_dates, use_column_names=use_column_names)
-
 
 class DashboardResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'dashboards'
