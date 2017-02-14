@@ -81,7 +81,7 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
               df[col_name] = df[col_name].astype(int)
         except Exception:
           pass  # really, we do not want this workaround to create any errors if it fails
-      if c['data_type'] == 'date' and parse_dates and len(df[col_name]) > 0:
+      if parse_dates and c['data_type'] == 'date' and len(df[col_name]) > 0:
         parser = DateParser()
         parser.identifyPeriodUnit(df[col_name][0])
         df[col_name] = df[col_name].map(parser.parse)

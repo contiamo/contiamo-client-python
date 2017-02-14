@@ -61,13 +61,22 @@ class RequestTestCase(unittest.TestCase):
   @vcr.use_cassette('tests/cassettes/test_sql_query.yaml')
   def test_sql_query(self):
     result = self.project.query_sql(app_id, 'select * from %s limit 1;' % sql_table)
-    self.assertEqual(result.loc[0, 'Field a'], 1)
+    self.assertEqual(result.loc[0, 'field_a'], 1)
 
   @vcr.use_cassette('tests/cassettes/test_query_contract.yaml')
   def test_query_contract(self):
-    result = self.client.query_contract(contract_id, max_rows=1)
-    self.assertEqual(result.loc[0, 'Field a'], 1)
+    app = self.project.App(app_id)
+    contract_key = contract_id.rsplit(':', maxsplit=1)[-1]
+    contract = app.Contract(contract_key)
+    result = contract.query_all(max_rows=1)
+    self.assertEqual(result.loc[0, 'field_a'], 1)
 
+  @vcr.use_cassette('tests/cassettes/test_query_contract.yaml')
+  def test_query_contract_from_project(self):
+    # define from labs id as project child
+    contract = self.project.Contract(contract_id)
+    result = contract.query_all(max_rows=1)
+    self.assertEqual(result.loc[0, 'field_a'], 1)
 
 if __name__ == '__main__':
   unittest.main()
