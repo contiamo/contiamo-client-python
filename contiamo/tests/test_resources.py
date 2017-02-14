@@ -19,7 +19,6 @@ try:
   dashboard_id = config['dashboard_id']
   app_id = config['app_id']
   sql_table = config['sql_table']
-  contract_id = config['contract_id']
 except FileNotFoundError:
   warnings.warn('These tests will be skipped, as they require configuration information that is unavailable.')
   config = None
