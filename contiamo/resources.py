@@ -153,7 +153,6 @@ class ProjectResource(Resource):
   def _init_nested_resources(self):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
-    self.Contract = CreateNestedResource(ContractResource, parent=self, init_from_project=True)
 
   def query_sql(self, app_id, sql):
     payload = {
@@ -185,35 +184,6 @@ class AppResource(RetrievableResource, Resource):
     self.Contract = CreateNestedResource(ContractResource, parent=self)
 
 
-class ContractResource(Resource):
+class ContractResource(Resource):  # inherit from RetrievableResource once API user has permission
   path_segment = 'data_contracts/contracts'
   id_attribute = 'key'
-  init_from_project = False
-
-  def __init__(self, id):
-    if self.init_from_project:
-      id = self._init_from_labs_id(id)
-    # once contracts are retrievable, the table name will be available under storage_key
-    self.table = 'contract_%s' % id
-    super().__init__(id)
-
-  def _init_from_labs_id(self, labs_id):
-    """
-    As a convenience, the contract can be defined directly from its labs ID at the project level.
-    """
-    try:
-      _, project_id, app_id, contract_key = labs_id.split(':')[:4]  # truncate id in case token was left in by the user
-    except ValueError:
-      raise errors.InvalidRequestError('"%s" is not a valid data contract identifier.' % labs_id)
-    if project_id != str(self.parent.id):  # the parent id can be string or int
-      raise errors.InvalidRequestError('Contract "%s" does not belong to project %s.' % (labs_id, self.parent.id))
-    self.parent = self.parent.App(app_id)
-    return contract_key
-
-  def query_all(self, max_rows=10000, **query_sql_kwargs):
-    if max_rows > 100000:
-      raise errors.InvalidRequestError(
-        'The number of rows is limited at 100k. Please contact us if you need to query more data.')
-    # deal with negative max_rows silently to avoid misleading authentication failure
-    sql_command = 'SELECT * FROM %s LIMIT %d;' % (self.table, max(max_rows, 0))
-    return self.parent.parent.query_sql(self.parent.id, sql_command, **query_sql_kwargs)
