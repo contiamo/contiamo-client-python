@@ -154,14 +154,16 @@ class ProjectResource(Resource):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
 
-  def query_sql(self, app_id, sql, parse_dates=True, use_column_names=True):
+  def query_sql(self, app_id, sql):
     payload = {
       'app_data_id': app_id,
       'columns': [],
       'query': sql
     }
     json_response = self._post(sub_path='/sql_query', payload=payload)
-    return parse_query_result(json_response, parse_dates=parse_dates, use_column_names=use_column_names)
+    # SQL queries do not return 'date' as a data type, so there is no point in parsing dates in the query result.
+    # However, we could parse the date in field_date_raw afterwards.
+    return parse_query_result(json_response, parse_dates=False, use_column_names=False)
 
 
 class DashboardResource(RetrievableResource, UpdateableResource, Resource):
@@ -170,8 +172,18 @@ class DashboardResource(RetrievableResource, UpdateableResource, Resource):
   def _init_nested_resources(self):
     self.Widget = CreateNestedResource(WidgetResource, parent=self)
 
+
 class WidgetResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'widgets'
 
+
 class AppResource(RetrievableResource, Resource):
   path_segment = 'apps'
+
+  def _init_nested_resources(self):
+    self.Contract = CreateNestedResource(ContractResource, parent=self)
+
+
+class ContractResource(Resource):  # inherit from RetrievableResource once API user has permission
+  path_segment = 'data_contracts/contracts'
+  id_attribute = 'key'

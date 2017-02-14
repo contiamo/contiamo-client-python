@@ -60,7 +60,7 @@ class RequestTestCase(unittest.TestCase):
   @vcr.use_cassette('tests/cassettes/test_sql_query.yaml')
   def test_sql_query(self):
     result = self.project.query_sql(app_id, 'select * from %s limit 1;' % sql_table)
-    self.assertEqual(result.loc[0, 'Field a'], 1)
+    self.assertEqual(result.loc[0, 'field_a'], 1)
 
 
 if __name__ == '__main__':
