@@ -24,7 +24,7 @@ class DataClient:
   def _make_request(self, url, file_object=None):
     kwargs = {'params': {'access_token': self.token}}
     if file_object:
-      kwargs.update({'files': {'file': file_object}})
+      kwargs.update({'files': {'file-json': file_object}})
 
     response = self.client.request('post', url, **kwargs)
     try:
@@ -34,10 +34,12 @@ class DataClient:
 
     return json_response
 
-  def post_df(self, url, dataframe, ignore_index=True):
-    # workaround until we can upload JSON data
+  def post_df(self, url, dataframe):
     with tempfile.NamedTemporaryFile() as f:
-      dataframe.to_csv(f.name, index=not(ignore_index))
+      dataframe.to_json(
+        f.name, orient='records', lines=True, date_format='iso', date_unit='s'
+      )
+
       f.seek(0)
       result = self._make_request(url, f)
     return result
@@ -47,7 +49,7 @@ class DataClient:
       result = self._make_request(url, f)
     return result
 
-  def _post_data(self, url, dataframe, filename, ignore_index):
+  def _post_data(self, url, dataframe, filename):
     # sanity checks
     if dataframe is None and filename is None:
       raise InvalidRequestError('You need to specify at least a dataframe or a file to upload.')
@@ -58,19 +60,19 @@ class DataClient:
         'The argument you passed is a %s, not a pandas dataframe:\n%s' % (type(dataframe).__name__, str(dataframe)))
 
     if dataframe is not None:
-      return self.post_df(url, dataframe, ignore_index)
+      return self.post_df(url, dataframe)
     else:
       return self.post_file(url, filename)
 
   ###
   # Public methods
-  def discover(self, dataframe=None, filename=None, ignore_index=True):
+  def discover(self, dataframe=None, filename=None):
     url = self.url_template.format(action='upload/discover')
-    return self._post_data(url, dataframe, filename, ignore_index)
+    return self._post_data(url, dataframe, filename)
 
-  def upload(self, dataframe=None, filename=None, ignore_index=True):
+  def upload(self, dataframe=None, filename=None):
     url = self.url_template.format(action='upload/process')
-    return self._post_data(url, dataframe, filename, ignore_index)
+    return self._post_data(url, dataframe, filename)
 
   def purge(self):
     url = self.url_template.format(action='data_purge')
