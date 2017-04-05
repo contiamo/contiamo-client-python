@@ -47,15 +47,13 @@ class DataClient:
     return json_response
 
   def post_df(self, url, dataframe, include_index=False):
+    if include_index:
+      dataframe = dataframe.reset_index(drop=False)
+
     with tempfile.NamedTemporaryFile() as f:
-
-      if include_index:
-        dataframe.reset_index(inplace=True, drop=False)
-
       dataframe.to_json(
         f.name, orient='records', lines=True, date_format='iso', date_unit='s'
       )
-
       f.seek(0)
       result = self._make_request(url, f, file_type='jsonl')
     return result
