@@ -1,3 +1,5 @@
+import os
+
 try:
   import pandas as pd
   from contiamo.dateparser import DateParser
@@ -88,3 +90,8 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
   except KeyError as e:
     raise_response_error(e, response)
   return df
+
+
+def get_file_extension(filename):
+    _, ext = os.path.splitext(filename)
+    return ext.lstrip('.')
