@@ -6,7 +6,7 @@ interactions:
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['0']
-      User-Agent: [python-requests/2.11.1]
+      User-Agent: [python-requests/2.12.4]
       X-API-TOKEN: [some_api_key]
     method: POST
     uri: https://api.contiamo.com/48590558/apps/666571902/data_contracts/contracts/contract/data_purge?access_token=f4tpccqljhkmidvziekbshxxlui5da4t
@@ -16,11 +16,9 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['15']
       Content-Type: [text/plain; charset=utf-8]
-      Date: ['Fri, 16 Dec 2016 10:12:57 GMT']
+      Date: ['Thu, 13 Apr 2017 10:43:42 GMT']
       Keep-Alive: [timeout=20]
       Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000, max-age=31536000]
-      strict-transport-security: [max-age=31536000, max-age=31536000]
-      x-frame-options: [SAMEORIGIN]
+      Strict-Transport-Security: [max-age=31536000]
     status: {code: 200, message: OK}
 version: 1

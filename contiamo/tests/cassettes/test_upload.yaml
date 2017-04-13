@@ -1,16 +1,16 @@
 interactions:
 - request:
     body: !!binary |
-      LS1lMzEwMTIzOTM5MWM0NDQzODMyMzY3NjNmYTQ4ODU1OQ0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      LS02OWJjN2Q2ODc5MzI0NzU4OGQ4OTQ3YmE2MGQ5ZDcyMg0KQ29udGVudC1EaXNwb3NpdGlvbjog
       Zm9ybS1kYXRhOyBuYW1lPSJmaWxlIjsgZmlsZW5hbWU9Im1vY2tfZGF0YS5jc3YiDQoNCmEsYgox
-      LDIKMyw0DQotLWUzMTAxMjM5MzkxYzQ0NDM4MzIzNjc2M2ZhNDg4NTU5LS0NCg==
+      LDIKMyw0DQotLTY5YmM3ZDY4NzkzMjQ3NTg4ZDg5NDdiYTYwZDlkNzIyLS0NCg==
     headers:
       Accept: [application/json]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
       Content-Length: ['160']
-      Content-Type: [multipart/form-data; boundary=e3101239391c444383236763fa488559]
-      User-Agent: [python-requests/2.11.1]
+      Content-Type: [multipart/form-data; boundary=69bc7d68793247588d8947ba60d9d722]
+      User-Agent: [python-requests/2.12.4]
       X-API-TOKEN: [some_api_key]
     method: POST
     uri: https://api.contiamo.com/48590558/apps/666571902/data_contracts/contracts/contract/upload/process?access_token=f4tpccqljhkmidvziekbshxxlui5da4t
@@ -20,11 +20,9 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['15']
       Content-Type: [text/plain; charset=utf-8]
-      Date: ['Fri, 16 Dec 2016 10:25:38 GMT']
+      Date: ['Thu, 13 Apr 2017 10:43:42 GMT']
       Keep-Alive: [timeout=20]
       Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000, max-age=31536000]
-      strict-transport-security: [max-age=31536000, max-age=31536000]
-      x-frame-options: [SAMEORIGIN]
+      Strict-Transport-Security: [max-age=31536000]
     status: {code: 200, message: OK}
 version: 1

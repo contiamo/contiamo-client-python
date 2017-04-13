@@ -5,75 +5,34 @@ interactions:
       Accept: [application/json]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.11.1]
+      User-Agent: [python-requests/2.12.4]
       X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
     method: GET
     uri: https://api.contiamo.com/48590558/dashboards/2132
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA12OS2uDQBhF/0qYtRAca2gCpTRPDBml4qOTjYzOmPmMj+BoREv/e8cuu7iby+Hc
-        +42Aow02LWygmlUCbRAZFzm0qltwpmTasJYjA5VsbPou6cbHjKisFaKe6ya7J0/RKmhqrTGQZCpR
-        3VhqKmelEgYSHLp/VSfF3xIXOevLTns4qKxXsyWZ/5iva3vG+iqtGZQaXVbaw5axqeAKjnIKZyAB
-        fZLA0QmfBB+le3pIVt+GNFqDF2yB4NCkwc2m8QG7UwTXilhu5ZdkiiTBjkVOoU0Kv/JO1CJ7F7z9
-        Hbv7w0iD6E4DMtFY8wW1vNgvqHZd6m1/Hc/8clSQ7fSH2m94bIIDA5DpYxC7M//6fFeSva1Ezs1V
-        npor28IvbI1+fgGzg5pwaAEAAA==
+        H4sIAAAAAAAAA4WRUW+bMBSF/0rl50gdpGk3pGpqmzIR1USp6Ci8RI59E19iMLJNKFT574Oo6aQ9
+        rA+Wrs/5fK59/U5QkMD3pv6EVKwEEhDaXWzRWHchmJUbzYwgE6JYpxu3dl09IgZqbdwoa75fH8BY
+        1BUJPG8yWFY3hsO6BlOiHQ1LgndyQGhJ4EwDEwIC3bkWoMDBecd13Z1rK5n5NOpmo5B/YhKVMFCN
+        wS2KHbhTD26A/c1SaD+6HMfgsoTqS8y6TsH/oeOASWbXJ5QEW6bsx5P+kZyE0zwFbFmjxmk52ZSb
+        iqEa1MtyOMIuU89ijpGNiqilCT/Q+WpY/BD7M7l8lTr385aG36d0riRNdm9Z/1vG/qrP0hCXSVws
+        f4UYJ2ERlwtJ53dDBu2yJHrLirzM+l0bly9t3D/vs5R6y+TFy1M6y9LFPi8er56q+ybvFuIptMgf
+        hjtUz1qkHkbYIu3vWnhYiNfVz+Efbm9mYjqd8ZtvP642/Bp8cvwDH+QMoTkCAAA=
     headers:
       Connection: [close]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 15 Dec 2016 15:02:50 GMT']
+      Date: ['Thu, 13 Apr 2017 10:43:43 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
+      Vary: [Accept-Encoding, Origin]
       cache-control: ['max-age=0, private, must-revalidate']
       status: [200 OK]
+      vary: [Accept-Encoding, Origin]
       x-rack-cache: [miss]
-      x-request-id: [89bbfe123e0490a802f785caf331cf15]
-      x-runtime: ['0.089414']
-      x-ua-compatible: ['IE=Edge,chrome=1']
-    status: {code: 200, message: OK}
-- request:
-    body: !!binary |
-      eyJsYXlvdXRfdHlwZSI6ICJzY3JlZW4iLCAibG9ja192ZXJzaW9uIjogMiwgIm5hbWUiOiAiTXkg
-      Zmlyc3QgZGFzaGJvYXJkIiwgImhhc19zdHlsZSI6IGZhbHNlLCAidGh1bWJuYWlsIjogIi9tZWRp
-      YS9XMXNpWmlJc0lqSXdNVFl2TVRJdk1UVXZNMkZoTkdwaGFuZ3diVjlpT1RCaU0yVTFZVGc1WVdF
-      Mk56VmlabU0zTm1SbE16VmhNMkkzTUdVNU1qUm1PR1kzTUROaU9EazJOREV5WVRWa1lUTXpZV00z
-      TmpZM09XUmpZMlUxTG5CdVp5SmRMRnNpY0NJc0luUm9kVzFpSWl3aU16QXdlQ0pkWFE/c2hhPTZl
-      ZmQxNmZiMTY1MzI0YTkiLCAiZGlzY3Vzc2lvbl9pZCI6IDE4OTUsICJpZCI6IDIxMzIsICJlZGl0
-      X3N0eWxlIjogZmFsc2UsICJ0aGVtZSI6ICJkZWZhdWx0In0=
-    headers:
-      Accept: [application/json]
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['377']
-      Content-Type: [application/json]
-      User-Agent: [python-requests/2.11.1]
-      X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
-    method: PUT
-    uri: https://api.contiamo.com/48590558/dashboards/2132
-  response:
-    body:
-      string: !!binary |
-        H4sIAAAAAAAAA12OXWuDMBiF/0rJtVASq2sLY6yfWBplYnXpjUQTa6wfxcSKjv33xd0MdvFy4PDw
-        vOcLpE1Z8lSJpo6fvJU6wRoulnAJF/AFQtsAgoE1giYyQE0rDtYAD7NMtFLNGJV50tCWAQOUdGg6
-        FavhMSEybTmvp7pJ739i0wA5lbFUQ6mpjJaSG4Azof5VKue/nxjPaFcq7WFCpp2cLPG0By5X1oR1
-        VVJTUWp0XmkPnUdQiqtwpFM4PQ7IEweOvssTo0PuHh85rW99Eq6EF2wERhdIgptFoj1yx1BcK2y6
-        lV/iMcwxckx8vFi48CvvSEy8c4W3uyN3tx9IEN5JgEcSab4gphf5BdGuc73prsOJnQ9SpFu9ofYb
-        FkHhiF7g8b3n2xP7/HiTOX21ecagnSXQtky0oCvw/QMLrzEjigEAAA==
-    headers:
-      Connection: [close]
-      Content-Encoding: [gzip]
-      Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 15 Dec 2016 15:02:51 GMT']
-      Server: [nginx]
-      Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
-      cache-control: ['max-age=0, private, must-revalidate']
-      status: [200 OK]
-      x-rack-cache: ['invalidate, pass']
-      x-request-id: [106c9d34355138f619bc12aa5b3f5852]
-      x-runtime: ['0.125284']
+      x-request-id: [a4ffca3fa5ad289c01ae16c084494f76]
+      x-runtime: ['0.035906']
       x-ua-compatible: ['IE=Edge,chrome=1']
     status: {code: 200, message: OK}
 version: 1

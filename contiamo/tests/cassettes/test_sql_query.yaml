@@ -1,7 +1,7 @@
 interactions:
 - request:
     body: !!binary |
-      eyJjb2x1bW5zIjogW10sICJhcHBfZGF0YV9pZCI6IDY2NjU3MTkwMiwgInF1ZXJ5IjogInNlbGVj
+      eyJhcHBfZGF0YV9pZCI6IDY2NjU3MTkwMiwgImNvbHVtbnMiOiBbXSwgInF1ZXJ5IjogInNlbGVj
       dCAqIGZyb20gY29udHJhY3RfY29udHJhY3QgbGltaXQgMTsifQ==
     headers:
       Accept: [application/json]
@@ -16,23 +16,27 @@ interactions:
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA42PzQqDMBCEXyXsseRQC1pq730JkRDjCqH50fxQRHz3JkVLKRR625nZb9hdwNmH
+        H4sIAAAAAAAAA42PzQqDMBCEXyXsseRQhVpq730JkRDjCqH50fxQRHz3JkVLKRR625nZb9hdwNmH
         h7ppClq2LQVhVdQmO8s2szCPCDVoDE4KoHDHOclBouoZT9pwnfNbNkg2eh74TpmoMWMr/auv++7r
-        fvWlW6eILqELbJmfVNrm48hehOyhrqqqPBeX4+njMxOVesPgUaEI5EAGZzUR1gTHRWD7QJTUMpDi
-        Cuv6BNgfT0YtAQAA
+        fvWlW6eILqELbJmfVNrm48hehOyhrqrqdC4ux/LjMxOVesPgUaEI5EAGZzUR1gTHRWD7QJTUMpDi
+        Cuv6BDMb4wAtAQAA
     headers:
       Connection: [close]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Tue, 14 Feb 2017 09:55:34 GMT']
+      Date: ['Thu, 13 Apr 2017 12:09:16 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
+      Vary: [Accept-Encoding, Origin]
+      access-control-allow-headers: ['DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-API-Token']
+      access-control-allow-methods: ['GET, POST, OPTIONS']
+      access-control-allow-origin: ['*']
       cache-control: ['max-age=0, private, must-revalidate']
       status: [200 OK]
+      vary: [Accept-Encoding, Origin]
       x-rack-cache: ['invalidate, pass']
-      x-request-id: [13766f1dd849fbf9882269464d84272d]
-      x-runtime: ['0.366337']
+      x-request-id: [776769ca43c28151ce56037982947079]
+      x-runtime: ['0.241106']
       x-ua-compatible: ['IE=Edge,chrome=1']
     status: {code: 200, message: OK}
 version: 1

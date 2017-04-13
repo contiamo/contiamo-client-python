@@ -8,24 +8,25 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['25']
       Content-Type: [application/json]
-      User-Agent: [python-requests/2.11.1]
+      User-Agent: [python-requests/2.12.4]
       X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
     method: POST
     uri: https://api.contiamo.com/48590558/dashboards
   response:
-    body: {string: '{"collection_version":148181502444,"id":2133,"name":"New dashboard","layout_type":"screen","lock_version":0,"has_style":false,"edit_style":false,"discussion_id":1896}'}
+    body: {string: '{"id":2515,"name":"New dashboard","layout_type":"screen","lock_version":0,"resource_permissions":{"view":true,"edit":true,"delete":true,"copy":true,"share":true,"public":true,"children":{"widgets":{"create":true,"list":true},"comments":{"create":true,"list":true},"styles":{"create":true,"list":true}}},"has_style":false,"edit_style":false}'}
     headers:
       Connection: [close]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 15 Dec 2016 15:17:04 GMT']
+      Date: ['Thu, 13 Apr 2017 11:41:45 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
       cache-control: ['max-age=0, private, must-revalidate']
-      etag: ['"711dfadf7b4a99115a7bf9a597c0b5fb"']
+      etag: ['"0f1c079688bded2a791c37495daf2b25"']
       status: [201 Created]
+      vary: [Origin]
       x-rack-cache: ['invalidate, pass']
-      x-request-id: [5d5d14493eb077c8dae0e79b458f672a]
-      x-runtime: ['0.221610']
+      x-request-id: [20a75c4584357e0fcc319690b329417f]
+      x-runtime: ['0.080081']
       x-ua-compatible: ['IE=Edge,chrome=1']
     status: {code: 201, message: Created}
 version: 1

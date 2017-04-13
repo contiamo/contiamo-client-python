@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 def query(query_id, parse_dates=True, use_column_names=True, api_base='https://api.contiamo.com'):
   http_client = HTTPClient()
   url, token = query_url_from_identifier(query_id, api_base)
-  response = http_client.request('get', url, params={'access_token': token})
+  response = http_client.request('get', url, params={'resource_token': token})
 
   try:
     json_response = response.json()

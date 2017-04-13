@@ -5,32 +5,37 @@ interactions:
       Accept: [application/json]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.11.1]
+      User-Agent: [python-requests/2.12.4]
       X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
     method: GET
     uri: https://api.contiamo.com/48590558/dashboards
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA12OUWuDMBhF/0rJs9BqdbSFMdhcyzeWykaKM2NITCJJG3WYWNGx/17d4x7uy+Vw
-        7v38QVqgXeCvAw/VrJJoh/CwKHVr3UIwq4qGtQJ5yLCh6Vzuhu8ZsbyVsp7rhl/yq2ytbmq0izyk
-        mM2tG8xElcxY6SEptPtXOSX/loQsWWfc5BHa8s7Olnz+42+20Yx1VVEzbSZ0WU0etkx9q6kGC2fo
-        McmumMCU05WuISzI3tERgo/gFFKiqiTmIT1Qg4PnKKtgTMgpwmkWHAlVGaHnhMAKn2Gk1duQxOAf
-        R3NJiNBJulfHmK8yko24gp6S9wuOeccPUQ1mZdPhpQfda3FQfpGCfn2CEcePIRhfPFjF7kshAhkV
-        fig4k3fbDfr9ugE9KIxIaAEAAA==
+        H4sIAAAAAAAAA+2SbWvbMBDHv0rR60BrOVnnQBlZHQeHSibFmWuPEWRJieT4IVh+iF3y3SeHJht9
+        0bL3e3FwuvvrTrr7/XwFkoEpNEw4AjnJOJgC1N1sZamqG0aUiAtSMjACKemKutpU3WGQlPxQlNUQ
+        Luh+0/BSySIHU+NupFOqqEvKNwdeZlINCQWmr6CRvAXTqqz5CHAmq4vPeMorfjnR4tBdfCVIeU0c
+        6jiV9CoTMmUlz4fCrWQ7Xp170JKTP7VSqd66nIbCWcbzT2Wq6lL+seikZYKozVkKpluSqrcvvQtV
+        gp/nyfiW1OkwrUrUWZwTmerobaavkNvAUDKSrnITt0U+bZC90kYbDCfCexFFBKMWOV9NZKcC+btj
+        2P8QGK76MHCk5+PEWzgS+06Cs6VA9kzXQF3ou8cwibKw37U4W7e4f96HATI8f21EAZqEwXIfJfPx
+        U/69jrole3KUpI/6DflzwQJDurKVqJ+1/HHJXlbf9B4e7ifMNCf0/s4ax/QLh+A0upJjXsnBvP0A
+        GqVHqlf2Hhr4n5m/mfmEkLBBvqtt3eDAqmJ7ZrLAhSS10hAiGGVz6C3CDvuu3rYQOtZGtrNHmhQc
+        zPuwjzLcI9PTFKBkrsmgBgrcI1q4Brb3mpqdiXraRYGTaNrMfyAETqjm3NyOrRhaJrHA6ddvClwN
+        D10EAAA=
     headers:
       Connection: [close]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 15 Dec 2016 15:13:02 GMT']
+      Date: ['Thu, 13 Apr 2017 10:43:42 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
+      Vary: [Accept-Encoding, Origin]
       cache-control: ['max-age=0, private, must-revalidate']
       status: [200 OK]
+      vary: [Accept-Encoding, Origin]
       x-rack-cache: [miss]
-      x-request-id: [b3b8a8f82b380f62ae4846a8ce999fa7]
-      x-runtime: ['0.057055']
+      x-request-id: [8b1eba25b23334032e0c64e1629121ce]
+      x-runtime: ['0.052207']
       x-ua-compatible: ['IE=Edge,chrome=1']
     status: {code: 200, message: OK}
 - request:
@@ -39,32 +44,37 @@ interactions:
       Accept: [application/json]
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [python-requests/2.11.1]
+      User-Agent: [python-requests/2.12.4]
       X-API-TOKEN: [swxJyCcEkYhSz1dEzyc9]
     method: GET
     uri: https://api.contiamo.com/48590558/dashboards
   response:
     body:
       string: !!binary |
-        H4sIAAAAAAAAA12OUWuDMBhF/0rJs9BqdbSFMdhcyzeWykaKM2NITCJJG3WYWNGx/17d4x7uy+Vw
-        7v38QVqgXeCvAw/VrJJoh/CwKHVr3UIwq4qGtQJ5yLCh6Vzuhu8ZsbyVsp7rhl/yq2ytbmq0izyk
-        mM2tG8xElcxY6SEptPtXOSX/loQsWWfc5BHa8s7Olnz+42+20Yx1VVEzbSZ0WU0etkx9q6kGC2fo
-        McmumMCU05WuISzI3tERgo/gFFKiqiTmIT1Qg4PnKKtgTMgpwmkWHAlVGaHnhMAKn2Gk1duQxOAf
-        R3NJiNBJulfHmK8yko24gp6S9wuOeccPUQ1mZdPhpQfda3FQfpGCfn2CEcePIRhfPFjF7kshAhkV
-        fig4k3fbDfr9ugE9KIxIaAEAAA==
+        H4sIAAAAAAAAA+2SbWvbMBDHv0rR60BrOVnnQBlZHQeHSibFmWuPEWRJieT4IVh+iF3y3SeHJht9
+        0bL3e3FwuvvrTrr7/XwFkoEpNEw4AjnJOJgC1N1sZamqG0aUiAtSMjACKemKutpU3WGQlPxQlNUQ
+        Luh+0/BSySIHU+NupFOqqEvKNwdeZlINCQWmr6CRvAXTqqz5CHAmq4vPeMorfjnR4tBdfCVIeU0c
+        6jiV9CoTMmUlz4fCrWQ7Xp170JKTP7VSqd66nIbCWcbzT2Wq6lL+seikZYKozVkKpluSqrcvvQtV
+        gp/nyfiW1OkwrUrUWZwTmerobaavkNvAUDKSrnITt0U+bZC90kYbDCfCexFFBKMWOV9NZKcC+btj
+        2P8QGK76MHCk5+PEWzgS+06Cs6VA9kzXQF3ou8cwibKw37U4W7e4f96HATI8f21EAZqEwXIfJfPx
+        U/69jrole3KUpI/6DflzwQJDurKVqJ+1/HHJXlbf9B4e7ifMNCf0/s4ax/QLh+A0upJjXsnBvP0A
+        GqVHqlf2Hhr4n5m/mfmEkLBBvqtt3eDAqmJ7ZrLAhSS10hAiGGVz6C3CDvuu3rYQOtZGtrNHmhQc
+        zPuwjzLcI9PTFKBkrsmgBgrcI1q4Brb3mpqdiXraRYGTaNrMfyAETqjm3NyOrRhaJrHA6ddvClwN
+        D10EAAA=
     headers:
       Connection: [close]
       Content-Encoding: [gzip]
       Content-Type: [application/json; charset=utf-8]
-      Date: ['Thu, 15 Dec 2016 15:13:02 GMT']
+      Date: ['Thu, 13 Apr 2017 10:43:43 GMT']
       Server: [nginx]
       Strict-Transport-Security: [max-age=31536000]
-      Vary: [Accept-Encoding]
+      Vary: [Accept-Encoding, Origin]
       cache-control: ['max-age=0, private, must-revalidate']
       status: [200 OK]
+      vary: [Accept-Encoding, Origin]
       x-rack-cache: [miss]
-      x-request-id: [6dd4e70db38d666dee135c35b40b1776]
-      x-runtime: ['0.076000']
+      x-request-id: [45b63169428b27b1f8f846343464a7f3]
+      x-runtime: ['0.863736']
       x-ua-compatible: ['IE=Edge,chrome=1']
     status: {code: 200, message: OK}
 version: 1
