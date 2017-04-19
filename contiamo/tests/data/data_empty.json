@@ -1,0 +1,69 @@
+{
+  "rows": [],
+  "query": {
+    "start_date": "2016-04-20",
+    "end_date": "2016-04-20",
+    "interval": "day",
+    "metrics": [
+      {
+        "key": "666571290:sessions",
+        "stats": []
+      },
+      {
+        "key": "666571290:avg_session_duration",
+        "stats": []
+      }
+    ],
+    "filters": [],
+    "calculations": [],
+    "dimensions": [
+      "network_location"
+    ],
+    "comparisons": null
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2016-04-20",
+      "end_date": "2016-04-20"
+    },
+    {
+      "column_type": "dimension",
+      "key": "network_location",
+      "data_type": "string",
+      "supports_regex": true,
+      "name": "Network Location",
+      "category": "Geo / Network",
+      "description": "The names of the service providers used to reach the property. For example, if most users of the website come via the major cable internet service providers, its value will be these service providers' names."
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Visits",
+      "summable": true,
+      "unit": "number",
+      "category": "Session",
+      "popular": true,
+      "description": "The total number of sessions.",
+      "data_type": "numeric",
+      "key": "666571290:sessions"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Ø Besuchszeit",
+      "summable": false,
+      "unit": "duration",
+      "category": "Session",
+      "popular": false,
+      "description": "The average duration (in seconds) of users' sessions.",
+      "data_type": "numeric",
+      "key": "666571290:avg_session_duration",
+      "duration": "seconds"
+    }
+  ]
+}

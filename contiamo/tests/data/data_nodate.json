@@ -1,0 +1,35 @@
+{
+  "rows": [
+    [
+      237.0
+    ]
+  ],
+  "query": {
+    "end_date": "2015-12-09",
+    "start_date": "2015-12-03",
+    "interval": "none",
+    "calculations": [],
+    "filters": [],
+    "comparisons": [],
+    "metrics": [
+      {
+        "key": "666570510:number_of_sales"
+      }
+    ],
+    "dimensions": []
+  },
+  "columns": [
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "No. of orders",
+      "summable": true,
+      "unit": "number",
+      "category": "Orders",
+      "popular": false,
+      "description": "Number of orders",
+      "data_type": "numeric",
+      "key": "666570510:number_of_sales"
+    }
+  ]
+}
