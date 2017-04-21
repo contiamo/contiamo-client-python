@@ -58,7 +58,17 @@ print(data_client.upload(df))
 
 Possible alternatives not using the `pandas` library are commented out above.
 
+### Available operations
+
+| Resource     | Create | List | Fetch / Retrieve | Modify | Destroy | Other actions   | Child Resources       |
+|--------------|--------|------|------------------|--------|---------|-----------------|-----------------------|
+| client       |        |      |                  |        |         |                 | project               |
+| project      |        |      |                  |        |         | query_sql       | app, dashboard        |
+| dashboard    | x      | x    | x                | x      |         |                 | widget                |
+| widget       | x      | x    | x                | x      |         |                 |                       |
+| app          |        | x    | x                |        |         |                 | contract              |
+| contract     |        |      |                  |        |         |                 |                       |
+
 ### Support
 
 support@contiamo.com
-
