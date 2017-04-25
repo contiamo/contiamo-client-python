@@ -72,5 +72,13 @@ class ParseJsonTestCase(unittest.TestCase):
     df = parse_json(result)
     self.assertEqual(len(df), 0)
 
+  def test_duplicate_columns(self):
+    with open(r'tests/data/data_duplicate_columns.json') as data_file:
+      result = json.load(data_file)
+    df = parse_json(result)
+    self.assertEqual(len(df.columns), 4)
+    self.assertTrue(df.columns.is_unique)
+
+
 if __name__ == '__main__':
   unittest.main()

@@ -1,0 +1,139 @@
+{
+  "rows": [
+    [
+      "2017-04-19",
+      0.0,
+      61.0,
+      3758.0
+    ],
+    [
+      "2017-04-20",
+      0.0,
+      76.0,
+      974.0
+    ],
+    [
+      "2017-04-21",
+      0.0,
+      73.0,
+      3158.0
+    ],
+    [
+      "2017-04-22",
+      0.0,
+      9.0,
+      3140.0
+    ],
+    [
+      "2017-04-23",
+      0.0,
+      19.0,
+      2937.0
+    ],
+    [
+      "2017-04-24",
+      0.0,
+      93.0,
+      3771.0
+    ],
+    [
+      "2017-04-25",
+      0.0,
+      44.0,
+      1876.0
+    ]
+  ],
+  "query": {
+    "start_date": "2017-04-19",
+    "end_date": "2017-04-25",
+    "interval": "day",
+    "metrics": [
+      {
+        "key": "666572110:pageviews",
+        "stats": []
+      },
+      {
+        "key": "666570118:pageviews",
+        "stats": []
+      },
+      {
+        "key": "666570446:pageviews",
+        "stats": []
+      }
+    ],
+    "filters": [],
+    "calculations": [],
+    "dimensions": [],
+    "comparisons": [],
+    "app_data_finder": {},
+    "type": "olap"
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2017-04-19",
+      "end_date": "2017-04-25"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Pageviews",
+      "summable": true,
+      "unit": "number",
+      "category": "Page Tracking",
+      "popular": true,
+      "description": "The total number of pageviews for the property.",
+      "data_type": "numeric",
+      "key": "666572110:pageviews",
+      "app_data": {
+        "id": 666572110,
+        "name": "All Web Site Data",
+        "app_name": "app_google_analytics",
+        "app_title": "Google Analytics",
+        "currency": "USD"
+      }
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Pageviews",
+      "summable": true,
+      "unit": "number",
+      "category": "Page Tracking",
+      "popular": true,
+      "description": "The total number of pageviews for the property.",
+      "data_type": "numeric",
+      "key": "666570118:pageviews",
+      "app_data": {
+        "id": 666570118,
+        "name": "Contiamo",
+        "app_name": "app_google_analytics",
+        "app_title": "Google Analytics",
+        "currency": "USD"
+      }
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Pageviews",
+      "summable": true,
+      "unit": "number",
+      "category": "Page Tracking",
+      "popular": true,
+      "description": "The total number of pageviews for the property.",
+      "data_type": "numeric",
+      "key": "666570446:pageviews",
+      "app_data": {
+        "id": 666570446,
+        "name": "Portal 1",
+        "app_name": "app_google_analytics",
+        "app_title": "Google Analytics",
+        "currency": "EUR"
+      }
+    }
+  ]
+}
