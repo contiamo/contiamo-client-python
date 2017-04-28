@@ -1,0 +1,128 @@
+{
+  "rows": [
+    [
+      "2017-04-22",
+      9.0,
+      900.0,
+      90.0
+    ],
+    [
+      "2017-04-23",
+      19.0,
+      1900.0,
+      190.0
+    ],
+    [
+      "2017-04-24",
+      93.0,
+      9300.0,
+      930.0
+    ],
+    [
+      "2017-04-25",
+      68.0,
+      6800.0,
+      680.0
+    ],
+    [
+      "2017-04-26",
+      78.0,
+      7800.0,
+      780.0
+    ],
+    [
+      "2017-04-27",
+      91.0,
+      9100.0,
+      910.0
+    ],
+    [
+      "2017-04-28",
+      16.0,
+      1600.0,
+      160.0
+    ]
+  ],
+  "query": {
+    "start_date": "2017-04-22",
+    "end_date": "2017-04-28",
+    "interval": "day",
+    "metrics": [
+      {
+        "key": "666570118:pageviews",
+        "stats": []
+      }
+    ],
+    "filters": [],
+    "calculations": [
+      {
+        "key": "1cwb9hse",
+        "name": "Calculation",
+        "summable": true,
+        "interval": "none",
+        "formula": "666570118:pageviews*100"
+      },
+      {
+        "key": "8ok66lmg",
+        "name": "Calculation",
+        "summable": true,
+        "interval": "none",
+        "formula": "666570118:pageviews*10"
+      }
+    ],
+    "dimensions": [],
+    "comparisons": [],
+    "app_data_finder": {},
+    "type": "olap"
+  },
+  "columns": [
+    {
+      "column_type": "dimension",
+      "key": "date:day",
+      "data_type": "date",
+      "supports_regex": true,
+      "period": "day",
+      "start_date": "2017-04-22",
+      "end_date": "2017-04-28"
+    },
+    {
+      "column_type": "metric",
+      "interval": "hour",
+      "name": "Pageviews",
+      "summable": true,
+      "unit": "number",
+      "category": "Page Tracking",
+      "popular": true,
+      "description": "The total number of pageviews for the property.",
+      "data_type": "numeric",
+      "key": "666570118:pageviews",
+      "app_data": {
+        "id": 666570118,
+        "name": "Contiamo",
+        "app_name": "app_google_analytics",
+        "app_title": "Google Analytics",
+        "currency": "USD"
+      }
+    },
+    {
+      "column_type": "metric",
+      "column_subtype": "calculation",
+      "name": "Calculation",
+      "summable": true,
+      "formula": "666570118:pageviews*100",
+      "unit": "number",
+      "data_type": "numeric",
+      "key": "calculation:1cwb9hse"
+    },
+    {
+      "column_type": "metric",
+      "column_subtype": "calculation",
+      "name": "Calculation",
+      "summable": true,
+      "formula": "666570118:pageviews*10",
+      "unit": "number",
+      "data_type": "numeric",
+      "key": "calculation:8ok66lmg"
+    }
+  ]
+}

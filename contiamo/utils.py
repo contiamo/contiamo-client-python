@@ -71,7 +71,25 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
 
   df = pd.DataFrame()
   try:
-    # parse column names and handle duplicates
+    for idx, column in enumerate(json_response['columns']):
+      col_key = column['key']
+      df[col_key] = [row[idx] for row in json_response['rows']]
+      # Format
+      if column['data_type'] == 'numeric':
+        df[col_key] = pd.to_numeric(df[col_key])
+        # try converting to integer if applicable
+        try:
+          if df[col_key].dtype == 'float':
+            if df[col_key].map(is_integer).all():
+              df[col_key] = df[col_key].astype(int)
+        except Exception:
+          pass  # really, we do not want this workaround to create any errors if it fails
+      if parse_dates and column['data_type'] == 'date' and len(df[col_key]) > 0:
+        parser = DateParser()
+        parser.identifyPeriodUnit(df[col_key][0])
+        df[col_key] = df[col_key].map(parser.parse)
+
+    # once the dataframe is built with keys, overwrite column names if requested
     if use_column_names:
       column_names = []
       for column in json_response['columns']:
@@ -87,27 +105,13 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
         # column names not unique: use app_data name for metrics
         for idx, column in enumerate(json_response['columns']):
           if column['column_type'] == 'metric':
-            column_names[idx] = column['app_data']['name'] + ': ' + column['name']
-    else:
-      column_names = [column['key'] for column in json_response['columns']]
+            try:
+              column_names[idx] = column['app_data']['name'] + ': ' + column['name']
+            except KeyError as e:
+              # calculations do not have an app_data
+              pass
+      df.columns = column_names
 
-    for idx, column in enumerate(json_response['columns']):
-      col_name = column_names[idx]
-      df[col_name] = [row[idx] for row in json_response['rows']]
-      # Format
-      if column['data_type'] == 'numeric':
-        df[col_name] = pd.to_numeric(df[col_name])
-        # try converting to integer if applicable
-        try:
-          if df[col_name].dtype == 'float':
-            if df[col_name].map(is_integer).all():
-              df[col_name] = df[col_name].astype(int)
-        except Exception:
-          pass  # really, we do not want this workaround to create any errors if it fails
-      if parse_dates and column['data_type'] == 'date' and len(df[col_name]) > 0:
-        parser = DateParser()
-        parser.identifyPeriodUnit(df[col_name][0])
-        df[col_name] = df[col_name].map(parser.parse)
   except KeyError as e:
     raise_json_error(e, json_response)
   return df
