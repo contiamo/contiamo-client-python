@@ -1,5 +1,6 @@
 from contiamo.http_client import HTTPClient
 from contiamo.utils import raise_response_error, parse_query_result
+from contiamo.data_tree import Tree
 
 from contiamo import errors
 
@@ -38,14 +39,14 @@ class Client:
 class Resource(dict):
   id_attribute = 'id'
   path_segment = None
-  parent = None
 
   def __init__(self, id):
     self.id = id
     self._init_nested_resources()
 
   def _init_nested_resources(self):
-    pass
+    for child in data_tree[self.name].children:
+      setattr(self, child.class_.name, CreateNestedResource(child.class_, parent=self))
 
   @classmethod
   def client(cls):
@@ -149,10 +150,7 @@ class UpdateableResource(Resource):
 ###
 class ProjectResource(Resource):
   path_segment = 'projects'
-
-  def _init_nested_resources(self):
-    self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
-    self.App = CreateNestedResource(AppResource, parent=self)
+  name = 'Project'
 
   def query_sql(self, app_id, sql):
     payload = {
@@ -168,22 +166,33 @@ class ProjectResource(Resource):
 
 class DashboardResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'dashboards'
-
-  def _init_nested_resources(self):
-    self.Widget = CreateNestedResource(WidgetResource, parent=self)
-
+  name = 'Dashboard'
 
 class WidgetResource(RetrievableResource, UpdateableResource, Resource):
   path_segment = 'widgets'
+  name = 'Widget'
 
 
 class AppResource(RetrievableResource, Resource):
   path_segment = 'apps'
-
-  def _init_nested_resources(self):
-    self.Contract = CreateNestedResource(ContractResource, parent=self)
-
+  name = 'App'
 
 class ContractResource(Resource):  # inherit from RetrievableResource once API user has permission
   path_segment = 'data_contracts/contracts'
   id_attribute = 'key'
+  name = 'Contract'
+
+
+###
+# Data tree
+###
+
+data_tree = Tree()
+data_tree.add_node(ProjectResource)
+
+data_tree.add_node(DashboardResource, parent='Project')
+data_tree.add_node(AppResource,       parent='Project')
+
+data_tree.add_node(WidgetResource,    parent='Dashboard')
+
+data_tree.add_node(ContractResource,  parent='App')
