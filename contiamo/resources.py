@@ -2,7 +2,7 @@ from contiamo.http_client import HTTPClient
 from contiamo.utils import raise_response_error, parse_query_result
 from contiamo.data_tree import Tree
 
-from contiamo import errors
+from contiamo.errors import InvalidRequestError
 
 import logging
 logger = logging.getLogger(__name__)
@@ -31,6 +31,21 @@ class Client:
 
   def instance_url(self):
     return self.api_base
+
+  def build(self, global_resource_id):
+    resource_type, *nested_ids = global_resource_id.split(':')
+    resource_type = resource_type.capitalize()
+    nested_classes = data_tree.get_nested_classes(resource_type)
+
+    if len(nested_classes) != len(nested_ids):
+      raise InvalidRequestError(
+        'Resource id %s is invalid (%d nested ids expected).' % (global_resource_id, len(nested_classes)))
+
+    resource = self
+    for resource_id, class_name in zip(nested_ids, nested_classes):
+      resource = getattr(resource, class_name)(resource_id)
+
+    return resource
 
 
 ###
@@ -123,13 +138,11 @@ class RetrievableResource(Resource):
   @classmethod
   def retrieve(cls, id):
     instance = cls(id)
-    resource = cls.request('get', instance.instance_url())
-    instance.update(resource)
+    instance.fetch()
     return instance
 
-  def refresh(self):
-    response = self._get()
-    self.update(self.instantiate_from_response(response))
+  def fetch(self):
+    self.update(self._get())
 
 
 class UpdateableResource(Resource):
@@ -186,7 +199,6 @@ class ContractResource(Resource):  # inherit from RetrievableResource once API u
 ###
 # Data tree
 ###
-
 data_tree = Tree()
 data_tree.add_node(ProjectResource)
 

@@ -37,6 +37,13 @@ class RequestTestCase(unittest.TestCase):
     self.assertTrue(isinstance(dashboard, self.project.Dashboard))
     self.assertEqual(dashboard['id'], dashboard_id)
 
+  @vcr.use_cassette('tests/cassettes/test_retrieve.yaml')
+  def test_fetch(self):
+    dashboard = self.project.Dashboard(dashboard_id)
+    dashboard.fetch()
+    self.assertTrue(isinstance(dashboard, self.project.Dashboard))
+    self.assertEqual(dashboard['id'], dashboard_id)
+
   @vcr.use_cassette('tests/cassettes/test_get_list.yaml')
   def test_get_list(self):
     dashboards = self.project.Dashboard.list()

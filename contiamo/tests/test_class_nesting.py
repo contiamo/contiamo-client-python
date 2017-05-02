@@ -29,6 +29,10 @@ class ClassNestingTestCase(unittest.TestCase):
     parent = Parent('123456')
     self.assertEqual(parent.Child.__name__, 'ParentChild')
 
+  def test_build(self):
+    resource = self.contiamo_client.build('widget:123:456:789')
+    self.assertEqual(resource.instance_url(), self.api_base + '/123/dashboards/456/widgets/789')
+
 
 if __name__ == '__main__':
   unittest.main()
