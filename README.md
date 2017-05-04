@@ -25,9 +25,18 @@ print(apps)
 dashboards = project.Dashboard.list()
 dashboard = project.Dashboard.retrieve(dashboards[0]['id'])
 print(dashboard)
+
 # Get widgets
 widgets = dashboard.Widget.list(instantiate=True)
 print(widgets)
+
+# Build and instantiate directly from a global id
+dashboard = client.build('dashboard:48590558:2132')
+dashboard.fetch()
+print(dashboard)
+
+# Delete resource
+# The delete method permanently deletes a resource (cannot be undone).
 
 # Execute SQL query
 df = project.query_sql(666571902, 'select * from contract_contract limit 1;', use_column_names=False)
@@ -64,10 +73,11 @@ Possible alternatives not using the `pandas` library are commented out above.
 |--------------|--------|------|------------------|--------|---------|-----------------|-----------------------|
 | client       |        |      |                  |        |         |                 | project               |
 | project      |        |      |                  |        |         | query_sql       | app, dashboard        |
-| dashboard    | x      | x    | x                | x      |         |                 | widget                |
-| widget       | x      | x    | x                | x      |         |                 |                       |
+| dashboard    | x      | x    | x                | x      | x       |                 | widget                |
+| widget       | x      | x    | x                | x      | x       | data            |                       |
 | app          |        | x    | x                |        |         |                 | contract              |
 | contract     |        |      |                  |        |         |                 |                       |
+| notebook     |        | x    | x                |        |         |                 |                       |
 
 ### Support
 
