@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def CreateNestedResource(base_class, parent, **kwargs):
-  class_name = type(parent).__name__ + base_class.__name__.rstrip('Resource')
+  class_name = type(parent).__name__ + base_class.__name__
   properties = {'parent': parent}
   properties.update(kwargs)
   return type(class_name, (base_class,), properties)
@@ -24,7 +24,7 @@ class Client:
     self.api_key = api_key
     self.api_base = api_base
     self.http_client = HTTPClient(api_key)
-    self.Project = CreateNestedResource(ProjectResource, parent=self, path_segment=None)
+    self.Project = CreateNestedResource(Project, parent=self, path_segment=None)
 
   def client(self):
     return self.http_client
@@ -39,7 +39,7 @@ class Client:
 
     if len(nested_classes) != len(nested_ids):
       raise InvalidRequestError(
-        'Resource id %s is invalid (%d nested ids expected).' % (global_resource_id, len(nested_classes)))
+        'Resource id "%s" is invalid (%d nested ids expected).' % (global_resource_id, len(nested_classes)))
 
     resource = self
     for resource_id, class_name in zip(nested_ids, nested_classes):
@@ -60,6 +60,7 @@ class Resource(dict):
     self._init_nested_resources()
 
   def _init_nested_resources(self):
+    # self.name is different from type(self).__name__ because we dynamically name children classes
     for child in data_tree[self.name].children:
       setattr(self, child.class_.name, CreateNestedResource(child.class_, parent=self))
 
@@ -145,6 +146,12 @@ class RetrievableResource(Resource):
     self.update(self._get())
 
 
+class QueryableResource(Resource):
+
+  def data(self):
+    return self._post(sub_path='data')
+
+
 class UpdateableResource(Resource):
 
   @classmethod
@@ -157,11 +164,15 @@ class UpdateableResource(Resource):
     response = self._put(payload=model)
     return self.instantiate_from_response(response)
 
+  def delete(self):
+    response = self.request('DELETE', self.instance_url())
+    return response
+
 
 ###
 # Resource classes
 ###
-class ProjectResource(Resource):
+class Project(Resource):
   path_segment = 'projects'
   name = 'Project'
 
@@ -177,34 +188,53 @@ class ProjectResource(Resource):
     return parse_query_result(json_response, parse_dates=False, use_column_names=False)
 
 
-class DashboardResource(RetrievableResource, UpdateableResource, Resource):
+class Dashboard(RetrievableResource, UpdateableResource):
   path_segment = 'dashboards'
   name = 'Dashboard'
 
-class WidgetResource(RetrievableResource, UpdateableResource, Resource):
+class Widget(RetrievableResource, QueryableResource, UpdateableResource):
   path_segment = 'widgets'
   name = 'Widget'
 
 
-class AppResource(RetrievableResource, Resource):
+class App(RetrievableResource):
   path_segment = 'apps'
   name = 'App'
 
-class ContractResource(Resource):  # inherit from RetrievableResource once API user has permission
+class Contract(RetrievableResource):
   path_segment = 'data_contracts/contracts'
   id_attribute = 'key'
   name = 'Contract'
+
+
+class Notebook(RetrievableResource):
+  path_segment = 'notebooks'
+  name = 'Notebook'
+
+class Presentation(RetrievableResource):
+  path_segment = 'presentations'
+  name = 'Presentation'
+
+class PublishedQuery(QueryableResource):
+  path_segment = 'published_queries'
+  name = 'Query'
 
 
 ###
 # Data tree
 ###
 data_tree = Tree()
-data_tree.add_node(ProjectResource)
+data_tree.add_node(Project)
 
-data_tree.add_node(DashboardResource, parent='Project')
-data_tree.add_node(AppResource,       parent='Project')
+# project children
+data_tree.add_node(Dashboard,      parent='Project')
+data_tree.add_node(App,            parent='Project')
+data_tree.add_node(Notebook,       parent='Project')
+data_tree.add_node(Presentation,   parent='Project')
+data_tree.add_node(PublishedQuery, parent='Project')
 
-data_tree.add_node(WidgetResource,    parent='Dashboard')
+# dashboard children
+data_tree.add_node(Widget, parent='Dashboard')
 
-data_tree.add_node(ContractResource,  parent='App')
+# app children
+data_tree.add_node(Contract, parent='App')

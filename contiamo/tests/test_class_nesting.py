@@ -21,11 +21,11 @@ class ClassNestingTestCase(unittest.TestCase):
     self.assertIs(self.dashboard.client(), self.contiamo_client.client())
 
   def test_nested_class_name(self):
-    class ChildResource(Resource):
+    class Child(Resource):
       pass
     class Parent(Resource):
       def _init_nested_resources(self):
-        self.Child = CreateNestedResource(ChildResource, parent=self)
+        self.Child = CreateNestedResource(Child, parent=self)
     parent = Parent('123456')
     self.assertEqual(parent.Child.__name__, 'ParentChild')
 

@@ -25,7 +25,7 @@ except FileNotFoundError:
 
 
 @unittest.skipIf(not config, 'Configuration information is not available.')
-class RequestTestCase(unittest.TestCase):
+class ResourceTestCase(unittest.TestCase):
 
   client = Client(api_key, api_base=api_base)
   project = client.Project(project_id)
@@ -64,10 +64,20 @@ class RequestTestCase(unittest.TestCase):
     response = self.dashboard.modify({'layout_type': new_layout})
     self.assertEqual(response['layout_type'], new_layout)
 
+  @vcr.use_cassette('tests/cassettes/test_delete.yaml')
+  def test_delete(self):
+    dashboard = self.client.build('dashboard:%d:%d' % (project_id, dashboard_id))
+    widget = dashboard.Widget.create({"type":"text","left":8,"top":1,"width":15,"height":2,"title":"","description":""})
+    response = widget.delete()
+    # assume that if server returns {} without error then delete was successful
+    self.assertEqual(len(response), 0)
+
   @vcr.use_cassette('tests/cassettes/test_sql_query.yaml')
   def test_sql_query(self):
     result = self.project.query_sql(app_id, 'select * from %s limit 2;' % sql_table)
     self.assertEqual(result.loc[0, 'field_a'], 1)
+
+  # @TODO: add unit test for /data endpoints when API user is authorized
 
 
 if __name__ == '__main__':
