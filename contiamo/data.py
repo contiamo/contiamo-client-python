@@ -30,12 +30,9 @@ class DataClient:
 
     if file_object:
       if not file_type:
-        raise ValueError(
-          'file_type must be specified if file_object is present'
-        )
+        raise ValueError('file_type must be specified if file_object is present')
 
       param_name = 'file-json' if file_type == 'jsonl' else 'file'
-
       kwargs.update({'files': {param_name: file_object}})
 
     response = self.client.request('post', url, **kwargs)
@@ -63,9 +60,8 @@ class DataClient:
 
     if extension not in ALLOWED_UPLOAD_FILETYPES:
       raise InvalidRequestError(
-        'Unsupported file type \'%s\' to upload. Allowed formats: %s' % (
-          extension, ', '.join(ALLOWED_UPLOAD_FILETYPES)
-        )
+        'Unsupported file type \'%s\' to upload. Allowed formats: %s' %
+        (extension, ', '.join(ALLOWED_UPLOAD_FILETYPES))
       )
 
     with open(filename, 'rb') as f:
@@ -91,6 +87,9 @@ class DataClient:
   # Public methods
   def discover(self, dataframe=None, filename=None, include_index=False):
     url = self.url_template.format(action='upload/discover')
+    if dataframe is not None:
+      # no need to upload full dataframe for discovery
+      dataframe = dataframe.sample(min(100, len(dataframe)))
     return self._post_data(url, dataframe, filename, include_index)
 
   def upload(self, dataframe=None, filename=None, include_index=False):
