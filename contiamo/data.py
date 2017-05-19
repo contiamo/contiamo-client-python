@@ -1,3 +1,4 @@
+import datetime
 import tempfile
 
 try:
@@ -15,6 +16,21 @@ logger = logging.getLogger(__name__)
 
 
 ALLOWED_UPLOAD_FILETYPES = {'csv', 'jsonl'}
+
+
+def to_json(df, filename):
+  """Serialize dates as dates without time."""
+  # indentify datetime columns with dates only
+  if df.select_dtypes(include=['datetime']).empty:
+    date_cols = []
+  else:
+    date_cols = df.select_dtypes(include=['datetime']).apply(lambda column: (column.dt.time == datetime.time(0)).all())
+    date_cols = date_cols[date_cols].index
+  print(date_cols)
+  # use chained assignment to avoid modifying original dataframe
+  df.assign(**{col: df[col].dt.strftime('%Y-%m-%d') for col in date_cols}).to_json(
+    filename, orient='records', lines=True, date_format='iso', date_unit='s'
+  )
 
 
 class DataClient:
@@ -48,9 +64,7 @@ class DataClient:
       dataframe = dataframe.reset_index(drop=False)
 
     with tempfile.NamedTemporaryFile() as f:
-      dataframe.to_json(
-        f.name, orient='records', lines=True, date_format='iso', date_unit='s'
-      )
+      to_json(dataframe, f.name)
       f.seek(0)
       result = self._make_request(url, f, file_type='jsonl')
     return result
