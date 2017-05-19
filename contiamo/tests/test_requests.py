@@ -51,6 +51,14 @@ class RequestsTestCase(unittest.TestCase):
     self.assertTrue('status' in response)
     self.assertEqual(response['status'], 'ok')
 
+  @unittest.skipIf(not pandas, 'The pandas package is not available.')
+  @vcr.use_cassette('tests/cassettes/test_upload.yaml')
+  def test_upload_dataframe(self):
+    df = pandas.DataFrame({'a': [1,3], 'b': [2,4]})
+    response = data_client.upload(dataframe=df)
+    self.assertTrue('status' in response)
+    self.assertEqual(response['status'], 'ok')
+
   @vcr.use_cassette('tests/cassettes/test_query.yaml')
   def test_query(self):
     response = query(query_id, api_base=api_base)
