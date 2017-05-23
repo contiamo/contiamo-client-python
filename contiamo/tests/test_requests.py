@@ -7,7 +7,7 @@ try:
 except ImportError:
   pandas = None
 
-from contiamo.data import DataClient
+from contiamo.data import DataClient, select_date_columns
 from contiamo.public import query
 from contiamo.errors import InvalidRequestError
 
@@ -29,6 +29,15 @@ data_client = DataClient(contract_id, contract_token, api_base=api_base)
 
 @unittest.skipIf(not config, 'Configuration information is not available.')
 class RequestsTestCase(unittest.TestCase):
+
+  @unittest.skipIf(not pandas, 'The pandas package is not available.')
+  def test_select_dates(self):
+    df = pandas.DataFrame({'date': pandas.date_range('2016-01-01', periods=2)})
+    df['datetime'] = pandas.to_datetime(df['date'].astype(str) + 'T01:00')
+    df.loc[3] = None  # test NaT datetime
+    self.assertEqual(select_date_columns(df), ['date'])
+    df = pandas.DataFrame({'int': [0, 1], 'float': [0.1, 0.2], 'str': ['a', 'b']})
+    self.assertEqual(select_date_columns(df), [])
 
   @vcr.use_cassette('tests/cassettes/test_purge.yaml')
   def test_purge(self):

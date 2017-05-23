@@ -18,15 +18,17 @@ logger = logging.getLogger(__name__)
 ALLOWED_UPLOAD_FILETYPES = {'csv', 'jsonl'}
 
 
+def select_date_columns(df):
+  """Indentify datetime columns with dates only."""
+  date_cols = []
+  for col in df.select_dtypes(include=['datetime']).columns:
+    if (df[col].dropna().dt.time == datetime.time(0)).all():
+      date_cols.append(col)
+  return date_cols
+
 def to_json(df, filename):
   """Serialize dates as dates without time."""
-  # indentify datetime columns with dates only
-  if df.select_dtypes(include=['datetime']).empty:
-    date_cols = []
-  else:
-    date_cols = df.select_dtypes(include=['datetime']).apply(lambda column: (column.dt.time == datetime.time(0)).all())
-    date_cols = date_cols[date_cols].index
-  print(date_cols)
+  date_cols = select_date_columns(df)
   # use chained assignment to avoid modifying original dataframe
   df.assign(**{col: df[col].dt.strftime('%Y-%m-%d') for col in date_cols}).to_json(
     filename, orient='records', lines=True, date_format='iso', date_unit='s'
