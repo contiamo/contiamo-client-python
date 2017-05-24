@@ -1,8 +1,6 @@
 from contiamo.http_client import HTTPClient
 from contiamo.utils import raise_response_error, parse_query_result
 
-from contiamo import errors
-
 import logging
 logger = logging.getLogger(__name__)
 
@@ -38,7 +36,6 @@ class Client:
 class Resource(dict):
   id_attribute = 'id'
   path_segment = None
-  parent = None
 
   def __init__(self, id):
     self.id = id
@@ -122,13 +119,18 @@ class RetrievableResource(Resource):
   @classmethod
   def retrieve(cls, id):
     instance = cls(id)
-    resource = cls.request('get', instance.instance_url())
-    instance.update(resource)
+    instance.fetch()
     return instance
 
-  def refresh(self):
-    response = self._get()
-    self.update(self.instantiate_from_response(response))
+  def fetch(self):
+    self.update(self._get())
+
+
+
+class QueryableResource(Resource):
+
+  def data(self):
+    return self._post(sub_path='data')
 
 
 class UpdateableResource(Resource):
@@ -143,6 +145,10 @@ class UpdateableResource(Resource):
     response = self._put(payload=model)
     return self.instantiate_from_response(response)
 
+  def delete(self):
+    response = self.request('DELETE', self.instance_url())
+    return response
+
 
 ###
 # Resource classes
@@ -153,6 +159,7 @@ class ProjectResource(Resource):
   def _init_nested_resources(self):
     self.Dashboard = CreateNestedResource(DashboardResource, parent=self)
     self.App = CreateNestedResource(AppResource, parent=self)
+    self.PublishedQuery = CreateNestedResource(PublishedQuery, parent=self)
 
   def query_sql(self, app_id, sql):
     payload = {
@@ -166,24 +173,29 @@ class ProjectResource(Resource):
     return parse_query_result(json_response, parse_dates=False, use_column_names=False)
 
 
-class DashboardResource(RetrievableResource, UpdateableResource, Resource):
+class DashboardResource(RetrievableResource, UpdateableResource):
   path_segment = 'dashboards'
 
   def _init_nested_resources(self):
     self.Widget = CreateNestedResource(WidgetResource, parent=self)
 
 
-class WidgetResource(RetrievableResource, UpdateableResource, Resource):
+class WidgetResource(RetrievableResource, QueryableResource, UpdateableResource):
   path_segment = 'widgets'
 
 
-class AppResource(RetrievableResource, Resource):
+class AppResource(RetrievableResource):
   path_segment = 'apps'
 
   def _init_nested_resources(self):
     self.Contract = CreateNestedResource(ContractResource, parent=self)
 
 
-class ContractResource(Resource):  # inherit from RetrievableResource once API user has permission
+class ContractResource(RetrievableResource):
   path_segment = 'data_contracts/contracts'
   id_attribute = 'key'
+
+
+class PublishedQuery(QueryableResource):
+  path_segment = 'published_queries'
+  name = 'Query'

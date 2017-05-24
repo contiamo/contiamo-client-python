@@ -30,7 +30,7 @@ widgets = dashboard.Widget.list(instantiate=True)
 print(widgets)
 
 # Execute SQL query
-df = project.query_sql(666571902, 'select * from contract_contract limit 1;', use_column_names=False)
+df = project.query_sql(666571902, 'select * from contract_contract limit 1;')
 print(df)
 ```
 

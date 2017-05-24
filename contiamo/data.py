@@ -1,3 +1,4 @@
+import datetime
 import tempfile
 
 try:
@@ -17,6 +18,21 @@ logger = logging.getLogger(__name__)
 ALLOWED_UPLOAD_FILETYPES = {'csv', 'jsonl'}
 
 
+def select_date_columns(df):
+  """Indentify datetime columns with dates only."""
+  date_cols = []
+  for col in df.select_dtypes(include=['datetime']).columns:
+    if (df[col].dropna().dt.time == datetime.time(0)).all():
+      date_cols.append(col)
+  return date_cols
+
+def to_json(df, filename):
+  """Serialize dates as dates without time."""
+  date_cols = select_date_columns(df)
+  df[date_cols] = df[date_cols].apply(lambda column: column.dt.strftime('%Y-%m-%d'))
+  df.to_json(filename, orient='records', lines=True, date_format='iso', date_unit='s')
+
+
 class DataClient:
 
   def __init__(self, contract_id, token, api_base='https://api.contiamo.com'):
@@ -30,12 +46,9 @@ class DataClient:
 
     if file_object:
       if not file_type:
-        raise ValueError(
-          'file_type must be specified if file_object is present'
-        )
+        raise ValueError('file_type must be specified if file_object is present')
 
       param_name = 'file-json' if file_type == 'jsonl' else 'file'
-
       kwargs.update({'files': {param_name: file_object}})
 
     response = self.client.request('post', url, **kwargs)
@@ -51,9 +64,7 @@ class DataClient:
       dataframe = dataframe.reset_index(drop=False)
 
     with tempfile.NamedTemporaryFile() as f:
-      dataframe.to_json(
-        f.name, orient='records', lines=True, date_format='iso', date_unit='s'
-      )
+      to_json(dataframe, f.name)
       f.seek(0)
       result = self._make_request(url, f, file_type='jsonl')
     return result
@@ -63,9 +74,8 @@ class DataClient:
 
     if extension not in ALLOWED_UPLOAD_FILETYPES:
       raise InvalidRequestError(
-        'Unsupported file type \'%s\' to upload. Allowed formats: %s' % (
-          extension, ', '.join(ALLOWED_UPLOAD_FILETYPES)
-        )
+        'Unsupported file type \'%s\' to upload. Allowed formats: %s' %
+        (extension, ', '.join(ALLOWED_UPLOAD_FILETYPES))
       )
 
     with open(filename, 'rb') as f:
@@ -89,11 +99,21 @@ class DataClient:
 
   ###
   # Public methods
+
+  # Any dataframe passed to these methods is copied so it will not be modified.
+  # Private methods can therefore modify the dataframe they receive.
+  # We can address memory issues by adding a flag later on.
+
   def discover(self, dataframe=None, filename=None, include_index=False):
+    if dataframe is not None:
+      # no need to upload full dataframe for discovery
+      dataframe = dataframe.sample(min(100, len(dataframe)))
     url = self.url_template.format(action='upload/discover')
     return self._post_data(url, dataframe, filename, include_index)
 
   def upload(self, dataframe=None, filename=None, include_index=False):
+    if dataframe is not None:
+      dataframe = dataframe.copy()
     url = self.url_template.format(action='upload/process')
     return self._post_data(url, dataframe, filename, include_index)
 
