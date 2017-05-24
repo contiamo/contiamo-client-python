@@ -29,10 +29,8 @@ def select_date_columns(df):
 def to_json(df, filename):
   """Serialize dates as dates without time."""
   date_cols = select_date_columns(df)
-  # use chained assignment to avoid modifying original dataframe
-  df.assign(**{col: df[col].dt.strftime('%Y-%m-%d') for col in date_cols}).to_json(
-    filename, orient='records', lines=True, date_format='iso', date_unit='s'
-  )
+  df[date_cols] = df[date_cols].apply(lambda column: column.dt.strftime('%Y-%m-%d'))
+  df.to_json(filename, orient='records', lines=True, date_format='iso', date_unit='s')
 
 
 class DataClient:
@@ -101,14 +99,21 @@ class DataClient:
 
   ###
   # Public methods
+
+  # Any dataframe passed to these methods is copied so it will not be modified.
+  # Private methods can therefore modify the dataframe they receive.
+  # We can address memory issues by adding a flag later on.
+
   def discover(self, dataframe=None, filename=None, include_index=False):
-    url = self.url_template.format(action='upload/discover')
     if dataframe is not None:
       # no need to upload full dataframe for discovery
       dataframe = dataframe.sample(min(100, len(dataframe)))
+    url = self.url_template.format(action='upload/discover')
     return self._post_data(url, dataframe, filename, include_index)
 
   def upload(self, dataframe=None, filename=None, include_index=False):
+    if dataframe is not None:
+      dataframe = dataframe.copy()
     url = self.url_template.format(action='upload/process')
     return self._post_data(url, dataframe, filename, include_index)
 
