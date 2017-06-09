@@ -77,6 +77,17 @@ class ResourceTestCase(unittest.TestCase):
     result = self.project.query_sql(app_id, 'select * from %s limit 2;' % sql_table)
     self.assertEqual(result.loc[0, 'field_a'], 1)
 
+  @vcr.use_cassette('tests/cassettes/test_dynamic_query.yaml')
+  def test_dynamic_query(self):
+    metric = "666571902:contract_data_value"
+    dimension = "contract_data_category-category"
+    payload = {
+      "start_date":"2016-01","end_date":"2016-01","interval":"none","period_unit":"month",
+      "metrics":[{"key": metric}], "dimensions":[{"key": dimension}]
+    }
+    result = self.project.query(payload, use_column_names=False)
+    self.assertTrue(metric in result and dimension in result)
+
   # @TODO: add unit test for /data endpoints when API user is authorized
 
 

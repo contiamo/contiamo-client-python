@@ -172,6 +172,9 @@ class ProjectResource(Resource):
     # However, we could parse the date in field_date_raw afterwards.
     return parse_query_result(json_response, parse_dates=False, use_column_names=False)
 
+  def query(self, payload, parse_dates=True, use_column_names=True):
+    json_response = self._post(sub_path='/query', payload=payload)
+    return parse_query_result(json_response, parse_dates=parse_dates, use_column_names=use_column_names)
 
 class DashboardResource(RetrievableResource, UpdateableResource):
   path_segment = 'dashboards'
