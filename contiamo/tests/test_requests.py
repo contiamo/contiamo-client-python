@@ -4,10 +4,11 @@ import os
 
 try:
   import pandas
+  import numpy as np
 except ImportError:
   pandas = None
 
-from contiamo.data import DataClient, select_date_columns
+from contiamo.data import DataClient, select_date_columns, select_int_columns, preformat
 from contiamo.public import query
 from contiamo.errors import InvalidRequestError
 
@@ -38,6 +39,19 @@ class RequestsTestCase(unittest.TestCase):
     self.assertEqual(select_date_columns(df), ['date'])
     df = pandas.DataFrame({'int': [0, 1], 'float': [0.1, 0.2], 'str': ['a', 'b']})
     self.assertEqual(select_date_columns(df), [])
+
+  @unittest.skipIf(not pandas, 'The pandas package is not available.')
+  def test_select_integers(self):
+    df = pandas.DataFrame({
+        'int': list(range(4)),
+        'int2': [3, np.nan, 58, np.nan],
+        'int3': [2, 57, np.nan, np.nan],
+        'float': [2.5, 2.6, 2.7, 2.0],
+    })
+    self.assertEqual(set(select_int_columns(df)), set(['int2', 'int3']))
+    preformat(df)
+    expected = pandas.DataFrame({'int2': ['3', np.nan, '58', np.nan]})['int2']
+    self.assertTrue(df['int2'].equals(expected))
 
   @vcr.use_cassette('tests/cassettes/test_purge.yaml')
   def test_purge(self):
