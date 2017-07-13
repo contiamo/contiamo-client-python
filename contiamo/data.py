@@ -3,6 +3,7 @@ import tempfile
 
 try:
   import pandas
+  import numpy
 except ImportError:
   pandas = None
 
@@ -26,11 +27,27 @@ def select_date_columns(df):
       date_cols.append(col)
   return date_cols
 
-def to_json(df, filename):
-  """Serialize dates as dates without time."""
+def select_int_columns(df):
+  int_cols = []
+  for col in df.select_dtypes(include=['float']).columns:
+    if numpy.isclose(df[col].round(0), df[col], equal_nan=True).all():
+      int_cols.append(col)
+  return int_cols
+
+def preformat(df):
+  """
+  Preprocess to improve default JSON serialization:
+  - dates: serialize without time when represented as datetime
+  - integers: serialize as string when represented as float
+  """
+  # dates
   date_cols = select_date_columns(df)
   df[date_cols] = df[date_cols].apply(lambda column: column.dt.strftime('%Y-%m-%d'))
-  df.to_json(filename, orient='records', lines=True, date_format='iso', date_unit='s')
+  # integers
+  int_cols = select_int_columns(df)
+  for col in int_cols:
+    # pandas assignment by index will fill NaN values back in their original locations
+    df[col] = df.loc[df[col].notnull(), col].astype(int).astype(str)
 
 
 class DataClient:
@@ -64,7 +81,7 @@ class DataClient:
       dataframe = dataframe.reset_index(drop=False)
 
     with tempfile.NamedTemporaryFile() as f:
-      to_json(dataframe, f.name)
+      dataframe.to_json(f.name, orient='records', lines=True, date_format='iso', date_unit='s')
       f.seek(0)
       result = self._make_request(url, f, file_type='jsonl')
     return result
@@ -108,6 +125,7 @@ class DataClient:
     if dataframe is not None:
       # no need to upload full dataframe for discovery
       dataframe = dataframe.sample(min(100, len(dataframe)))
+      preformat(dataframe)
     url = self.url_template.format(action='upload/discover')
     return self._post_data(url, dataframe, filename, include_index)
 
