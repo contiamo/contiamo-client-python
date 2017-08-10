@@ -27,7 +27,7 @@ df = pd.DataFrame({
     })
 ```
 
-# Purchase frequency table
+## Purchase frequency table
 
 ### Creation of an intermediate table
 
