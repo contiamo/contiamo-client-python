@@ -1,6 +1,5 @@
 
-_Suppose we want to cluster our customers according to their buying behavior, e.g. their purchase frequency. The Kmeans function in scikit will enable us to do that.
-_
+_Suppose we want to cluster our customers according to their buying behavior, e.g. their purchase frequency. The Kmeans function in scikit will enable us to do that._
 
 
 ```python
