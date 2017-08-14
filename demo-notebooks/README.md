@@ -1,0 +1,1 @@
+_In this folder you will find demo notebooks that can be used to explore Contiamo Labs. They use a demo databases created by Contiamo representating transaction information for a mobile app retailer._
