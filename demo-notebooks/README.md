@@ -1,1 +1,3 @@
-_In this folder you will find demo notebooks that can be used to explore Contiamo Labs. They use a demo databases created by Contiamo representating transaction information for a mobile app retailer._
+This folder contains companion notebooks for our documentation: https://docs.contiamo.com/en/labs/. 
+
+They are meant be used inside the Contiamo app. The notebooks use a demo database created by Contiamo representing transaction information for a mobile app retailer.
