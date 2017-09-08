@@ -49,9 +49,19 @@ class RequestsTestCase(unittest.TestCase):
         'float': [2.5, 2.6, 2.7, 2.0],
     })
     self.assertEqual(set(select_int_columns(df)), set(['int2', 'int3']))
+
+  @unittest.skipIf(not pandas, 'The pandas package is not available.')
+  def test_preformat(self):
+    df = pandas.DataFrame({
+        'int': [3, np.nan, 58],
+        'date': pandas.date_range('2016-01-01', periods=3),
+    })
     preformat(df)
-    expected = pandas.DataFrame({'int2': ['3', np.nan, '58', np.nan]})['int2']
-    self.assertTrue(df['int2'].equals(expected))
+    expected = pandas.DataFrame({
+      'int': ['3', np.nan, '58'],
+      'date': ['2016-01-01', '2016-01-02', '2016-01-03'],
+      })
+    self.assertTrue(df.equals(expected))
 
   @vcr.use_cassette('tests/cassettes/test_purge.yaml')
   def test_purge(self):

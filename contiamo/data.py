@@ -28,6 +28,7 @@ def select_date_columns(df):
   return date_cols
 
 def select_int_columns(df):
+  """Identify float columns with integer values only."""
   int_cols = []
   for col in df.select_dtypes(include=['float']).columns:
     if numpy.isclose(df[col].round(0), df[col], equal_nan=True).all():
@@ -42,7 +43,8 @@ def preformat(df):
   """
   # dates
   date_cols = select_date_columns(df)
-  df[date_cols] = df[date_cols].apply(lambda column: column.dt.strftime('%Y-%m-%d'))
+  if date_cols:
+    df[date_cols] = df[date_cols].apply(lambda column: column.dt.strftime('%Y-%m-%d'))
   # integers
   int_cols = select_int_columns(df)
   for col in int_cols:
