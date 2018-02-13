@@ -4,6 +4,14 @@ The `contiamo` API library in Python provides access to Contiamo's API functiona
 
 *In order to run the examples below, you need to get the API key and resource tokens from the project.*
 
+### Installation
+
+```
+git clone https://github.com/Contiamo/contiamo-client-python.git
+cd contiamo-client-python
+pip install .
+```
+
 ### Using the contiamo client
 
 The contiamo client gives authenticated access to a project's resources. You can view and modify existing resources, and create new ones.
