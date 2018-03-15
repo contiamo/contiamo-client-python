@@ -31,12 +31,12 @@ class IdentifierToUrl(unittest.TestCase):
     def test_contract_url_template(self):
         url_template = contract_url_template_from_identifier(
             'contract:48590121:666570779:test', api_base=self.api_base)
-        self.assertEqual(url_template, self.api_base +
-                         '/48590121/apps/666570779/data_contracts/contracts/test/{action}')
+        self.assertEqual(
+            url_template, self.api_base + '/48590121/apps/666570779/data_contracts/contracts/test/{action}')
 
     def test_invalid_contract_id(self):
         with self.assertRaises(InvalidRequestError):
-            url = contract_url_template_from_identifier(
+            contract_url_template_from_identifier(
                 'contract:48590121:666570779:test:randomcontracttoken', api_base=self.api_base)
 
 

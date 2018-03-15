@@ -117,7 +117,8 @@ class DataClient:
                 'Ambiguous request: You cannot provide both a dataframe and a file to upload.')
         if dataframe is not None and not (pandas and isinstance(dataframe, pandas.DataFrame)):
             raise InvalidRequestError(
-                'The argument you passed is a %s, not a pandas dataframe:\n%s' % (type(dataframe).__name__, str(dataframe)))
+                'The argument you passed is a %s, not a pandas dataframe:\n%s'
+                % (type(dataframe).__name__, str(dataframe)))
 
         if dataframe is not None:
             return self.post_df(url, dataframe, include_index)

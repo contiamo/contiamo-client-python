@@ -1,13 +1,15 @@
+import logging
+
 import requests
 from requests.exceptions import RequestException
 
 from contiamo import errors
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 
-class HTTPClient:
+class HTTPClient(object):
 
     def __init__(self, api_key=None):
         self.api_key = api_key
@@ -41,8 +43,8 @@ class HTTPClient:
     def _handle_request_error(self, e):
         if isinstance(e, TypeError):
             raise TypeError(
-                'You most likely have an outdated version of the requests library. Try upgrading to the latest version.\n'
-                'The error message was: %s' % e)
+                'You most likely have an outdated version of the requests library. Try upgrading to the latest '
+                'version.\nThe error message was: %s' % e)
         else:
             # we may need to handle all exceptions, not just requests ones
             logger.error('%s connection error: %s' % (type(e).__name__, e))

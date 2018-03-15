@@ -1,7 +1,9 @@
+import logging
+
 from contiamo.http_client import HTTPClient
 from contiamo.utils import raise_response_error, parse_query_result
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -15,7 +17,7 @@ def CreateNestedResource(base_class, parent, **kwargs):
 ###
 # Main client
 ###
-class Client:
+class Client(object):
 
     def __init__(self, api_key, api_base='https://api.contiamo.com'):
         self.api_key = api_key

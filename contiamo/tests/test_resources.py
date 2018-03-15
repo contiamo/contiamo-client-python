@@ -3,7 +3,7 @@ import os
 import vcr
 import yaml
 
-from contiamo.resources import *
+from contiamo.resources import Client
 
 
 def file_test_data(filename):

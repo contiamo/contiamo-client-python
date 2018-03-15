@@ -1,5 +1,4 @@
-# Exceptions
-import sys
+"""Exceptions"""
 
 
 class ContiamoException(Exception):
@@ -64,7 +63,8 @@ class QueryError(ContiamoException):
 
 class APIError(ContiamoException):
     """Catch-all error for all other non-200 responses including 500."""
-    default_message = 'The server responded with an unusual error. Please retry or report the bug to support@contiamo.com'
+    default_message = \
+        'The server responded with an unusual error. Please retry or report the bug to support@contiamo.com'
     include_error = True
 
 

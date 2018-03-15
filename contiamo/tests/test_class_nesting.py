@@ -1,6 +1,6 @@
 import unittest
 
-from contiamo.resources import *
+from contiamo.resources import CreateNestedResource, Client, Resource
 
 
 class ClassNestingTestCase(unittest.TestCase):

@@ -93,7 +93,7 @@ class TestRequests(object):
         assert 'status' in response
         assert response['status'] == 'ok'
 
-    @vcr.use_cassette(file_test_cassette('test_query.yaml')) 
+    @vcr.use_cassette(file_test_cassette('test_query.yaml'))
     def test_query(self):
         response = query(query_id, api_base=api_base)
         assert isinstance(response, pd.DataFrame)

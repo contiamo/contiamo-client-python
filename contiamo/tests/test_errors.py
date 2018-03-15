@@ -1,11 +1,13 @@
-import unittest
 import responses
+import unittest
 
 from contiamo.resources import Client
 from contiamo.public import query
 from contiamo.data import DataClient
 from contiamo.utils import query_url_from_identifier, contract_url_template_from_identifier
-from contiamo.errors import *
+from contiamo.errors import (
+    APIConnectionError, APIError, AuthenticationError, DataSourceError, NotFoundError, QueryError, ResponseError,
+    UpdateError)
 
 
 # the only meaningful parameter is api_base, which should not resolve
@@ -22,8 +24,7 @@ def mock_erroneous_request(method, response_body, status, payload=None):
     url = resource.class_url() if method == 'create' else resource.instance_url()
     verb = {'retrieve': responses.GET, 'create': responses.POST,
             'modify': responses.PUT}.get(method)
-    responses.add(verb, url, body=response_body, status=status,
-                  content_type='application/json')
+    responses.add(verb, url, body=response_body, status=status, content_type='application/json')
 
     argument = payload if payload else resource_id
     request_method = getattr(resource, method)
@@ -35,13 +36,11 @@ def mock_erroneous_retrieve(response_body, status):
 
 
 def mock_erroneous_create(response_body, status):
-    mock_erroneous_request('create', response_body, status,
-                           payload={'name': 'ResourceName'})
+    mock_erroneous_request('create', response_body, status, payload={'name': 'ResourceName'})
 
 
 def mock_erroneous_update(response_body, status):
-    mock_erroneous_request('modify', response_body, status,
-                           payload={'name': 'AnotherName'})
+    mock_erroneous_request('modify', response_body, status, payload={'name': 'AnotherName'})
 
 # public module
 
