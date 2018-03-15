@@ -1,10 +1,15 @@
 import os
+import warnings
 
 try:
   import pandas as pd
-  from contiamo.dateparser import DateParser
 except ImportError:
   pd = None
+
+try:
+  from contiamo.dateparser import DateParser
+except ImportError:
+  DateParser = None
 
 
 ###
@@ -62,7 +67,8 @@ def raise_json_error(e, response):
     json_body=response)
 
 def parse_query_result(json_response, parse_dates=True, use_column_names=True):
-  if not pd:
+  if pd is None:
+    warnings.warn('Could not import pandas; result returned as dictionary instead of dataframe.')
     return json_response
 
   # This function is not safe (only works with floats) so we keep it in the local namespace.
@@ -85,9 +91,12 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
         except Exception:
           pass  # really, we do not want this workaround to create any errors if it fails
       if parse_dates and column['data_type'] == 'date' and len(df[col_key]) > 0:
-        parser = DateParser()
-        parser.identifyPeriodUnit(df[col_key][0])
-        df[col_key] = df[col_key].map(parser.parse)
+        if DateParser is None:
+          warnings.warn('Could not import contiamo.dateparser; dates will be returned as strings.')
+        else:
+          parser = DateParser()
+          parser.identifyPeriodUnit(df[col_key][0])
+          df[col_key] = df[col_key].map(parser.parse)
 
     # once the dataframe is built with keys, overwrite column names if requested
     if use_column_names:
