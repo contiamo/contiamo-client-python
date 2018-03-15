@@ -59,6 +59,8 @@ class TestResources(object):
         new_dashboard = self.project.Dashboard.create({'name': dashboard_name})
         assert isinstance(new_dashboard, self.project.Dashboard)
         assert new_dashboard['name'] == dashboard_name
+        # Delete it so that we can create it next time
+        new_dashboard.delete()
 
     @vcr.use_cassette(file_test_cassette('test_modify.yaml'))
     def test_modify(self):
