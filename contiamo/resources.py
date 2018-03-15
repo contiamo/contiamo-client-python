@@ -23,8 +23,7 @@ class Client(object):
         self.api_key = api_key
         self.api_base = api_base
         self.http_client = HTTPClient(api_key)
-        self.Project = CreateNestedResource(
-            ProjectResource, parent=self, path_segment=None)
+        self.Project = CreateNestedResource(ProjectResource, parent=self, path_segment=None)
 
     def client(self):
         return self.http_client
@@ -197,7 +196,7 @@ class AppResource(RetrievableResource):
         self.Contract = CreateNestedResource(ContractResource, parent=self)
 
 
-class ContractResource(RetrievableResource):
+class ContractResource(RetrievableResource, UpdateableResource):
     path_segment = 'data_contracts/contracts'
     id_attribute = 'key'
 

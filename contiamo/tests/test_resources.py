@@ -32,6 +32,7 @@ class TestResources(object):
     client = Client(api_key, api_base=api_base)
     project = client.Project(project_id)
     dashboard = project.Dashboard.retrieve(dashboard_id)
+    app = project.App(app_id)
 
     @vcr.use_cassette(file_test_cassette('test_retrieve.yaml'))
     def test_retrieve(self):
@@ -53,14 +54,23 @@ class TestResources(object):
         dashboards = self.project.Dashboard.list(instantiate=True)
         assert isinstance(dashboards[0], self.project.Dashboard)
 
-    @vcr.use_cassette(file_test_cassette('test_create.yaml'))
-    def test_create(self):
+    @vcr.use_cassette(file_test_cassette('test_create_dashboard.yaml'))
+    def test_create_dashboard(self):
         dashboard_name = 'New dashboard'
         new_dashboard = self.project.Dashboard.create({'name': dashboard_name})
         assert isinstance(new_dashboard, self.project.Dashboard)
         assert new_dashboard['name'] == dashboard_name
         # Delete it so that we can create it next time
         new_dashboard.delete()
+
+    @vcr.use_cassette(file_test_cassette('test_create_contract.yaml'))
+    def test_create_contract(self):
+        contract_name = 'New contract'
+        new_contract = self.app.Contract.create({'name': contract_name})
+        assert isinstance(new_contract, self.app.Contract)
+        assert new_contract['name'] == contract_name
+        # Delete it so that we can create it next time
+        new_contract.delete()
 
     @vcr.use_cassette(file_test_cassette('test_modify.yaml'))
     def test_modify(self):
@@ -79,8 +89,7 @@ class TestResources(object):
 
     @vcr.use_cassette(file_test_cassette('test_sql_query.yaml'))
     def test_sql_query(self):
-        result = self.project.query_sql(
-            app_id, 'select * from %s limit 2;' % sql_table)
+        result = self.project.query_sql(app_id, 'select * from %s limit 2;' % sql_table)
         assert result.loc[0, 'field_a'] == 1
 
     @vcr.use_cassette(file_test_cassette('test_dynamic_query.yaml'))
