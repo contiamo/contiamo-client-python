@@ -1,5 +1,7 @@
 # Contiamo API library
 
+[![Build Status](https://travis-ci.org/contiamo/contiamo-client-python.svg?branch=master)](https://travis-ci.org/contiamo/contiamo-client-python)
+
 The `contiamo` API library in Python provides access to Contiamo's API functionality through a simple interface.
 
 *In order to run the examples below, you need to get the API key and resource tokens from the project.*
