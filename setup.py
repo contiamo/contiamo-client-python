@@ -34,7 +34,7 @@ else:
 
 # Don't import contiamo module here, since deps may not be installed
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'contiamo'))
-from version import VERSION  # noqa: E402
+from version import VERSION
 
 # Get simplejson if we don't already have json
 # if sys.version_info < (3, 0):
