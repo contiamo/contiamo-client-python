@@ -18,7 +18,7 @@ app_id = config['app_id']
 sql_table = config['sql_table']
 
 
-class TestResources(object):
+class TestResources:
 
     client = Client(api_key, api_base=api_base)
     project = client.Project(project_id)

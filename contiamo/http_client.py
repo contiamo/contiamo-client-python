@@ -9,7 +9,7 @@ from contiamo import errors
 logger = logging.getLogger(__name__)
 
 
-class HTTPClient(object):
+class HTTPClient:
 
     def __init__(self, api_key=None):
         self.api_key = api_key

@@ -3,7 +3,7 @@ import pandas as pd
 from isoweek import Week
 
 
-class DateParser(object):
+class DateParser:
     """Inspects a date string to find out its date format and provides the right date parser"""
 
     def parse_second(date_string):

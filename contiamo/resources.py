@@ -17,7 +17,7 @@ def CreateNestedResource(base_class, parent, **kwargs):
 ###
 # Main client
 ###
-class Client(object):
+class Client:
 
     def __init__(self, api_key, api_base='https://api.contiamo.com'):
         self.api_key = api_key

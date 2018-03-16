@@ -25,7 +25,7 @@ query_id = config['query_id']
 data_client = DataClient(contract_id, contract_token, api_base=api_base)
 
 
-class TestRequests(object):
+class TestRequests:
 
     def test_select_dates(self):
         df = pd.DataFrame(
@@ -92,7 +92,7 @@ class TestRequests(object):
         assert isinstance(response, pd.DataFrame)
 
 
-class TestErrors(object):
+class TestErrors:
 
     def file_test_dataframe(self):
         df = {'a': [1, 2, 3], 'b': [4, 5, 6]}
