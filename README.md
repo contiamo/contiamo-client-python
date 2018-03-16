@@ -75,7 +75,7 @@ Possible alternatives not using the `pandas` library are commented out above.
 | dashboard    | x      | x    | x                | x      |         |                 | widget                |
 | widget       | x      | x    | x                | x      |         |                 |                       |
 | app          |        | x    | x                |        |         |                 | contract              |
-| contract     |        |      |                  |        |         |                 |                       |
+| contract     | x      | x    | x                | x      | x       |                 |                       |
 
 ### Support
 
