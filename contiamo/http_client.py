@@ -59,7 +59,7 @@ class HTTPClient(object):
         is_auth_error = False
         try:
             is_auth_error = not response.json()['logged_in']
-        except:
+        except (ValueError, KeyError):
             pass
         if is_auth_error:
             raise errors.AuthenticationError(
@@ -77,5 +77,4 @@ class HTTPClient(object):
             error_class = ERROR_MAPPING[response.status_code]
         except KeyError:
             error_class = errors.APIError  # catch all
-        raise error_class(http_body=response.content,
-                          http_status=response.status_code, headers=response.headers)
+        raise error_class(http_body=response.content, http_status=response.status_code, headers=response.headers)
