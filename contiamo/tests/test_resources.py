@@ -1,21 +1,12 @@
-import os
-
 import vcr
 import yaml
 
+from . import utils
 from contiamo.resources import Client
 
 
-def file_test_data(filename):
-    return os.path.join(os.path.dirname(__file__), 'data', filename)
-
-
-def file_test_cassette(filename):
-    return os.path.join(os.path.dirname(__file__), 'cassettes', filename)
-
-
 try:
-    config = yaml.safe_load(open(file_test_data('test_config.yml')))
+    config = yaml.safe_load(open(utils.file_test_data('test_config.yml')))
 except FileNotFoundError:
     raise RuntimeError("Test config file not found. Email brandon@contiamo.com.")
 
@@ -34,27 +25,27 @@ class TestResources(object):
     dashboard = project.Dashboard.retrieve(dashboard_id)
     app = project.App(app_id)
 
-    @vcr.use_cassette(file_test_cassette('test_retrieve.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_retrieve.yaml'))
     def test_retrieve(self):
         dashboard = self.project.Dashboard.retrieve(dashboard_id)
         assert isinstance(dashboard, self.project.Dashboard)
         assert dashboard['id'] == dashboard_id
 
-    @vcr.use_cassette(file_test_cassette('test_retrieve.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_retrieve.yaml'))
     def test_fetch(self):
         dashboard = self.project.Dashboard(dashboard_id)
         dashboard.fetch()
         assert isinstance(dashboard, self.project.Dashboard)
         assert dashboard['id'] == dashboard_id
 
-    @vcr.use_cassette(file_test_cassette('test_get_list.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_get_list.yaml'))
     def test_get_list(self):
         dashboards = self.project.Dashboard.list()
         assert isinstance(dashboards[0], dict)
         dashboards = self.project.Dashboard.list(instantiate=True)
         assert isinstance(dashboards[0], self.project.Dashboard)
 
-    @vcr.use_cassette(file_test_cassette('test_create_dashboard.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_create_dashboard.yaml'))
     def test_create_dashboard(self):
         dashboard_name = 'New dashboard'
         new_dashboard = self.project.Dashboard.create({'name': dashboard_name})
@@ -63,7 +54,7 @@ class TestResources(object):
         # Delete it so that we can create it next time
         new_dashboard.delete()
 
-    @vcr.use_cassette(file_test_cassette('test_create_contract.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_create_contract.yaml'))
     def test_create_contract(self):
         contract_name = 'New contract'
         new_contract = self.app.Contract.create({'name': contract_name})
@@ -72,13 +63,13 @@ class TestResources(object):
         # Delete it so that we can create it next time
         new_contract.delete()
 
-    @vcr.use_cassette(file_test_cassette('test_modify.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_modify.yaml'))
     def test_modify(self):
         new_layout = 'report'
         response = self.dashboard.modify({'layout_type': new_layout})
         assert response['layout_type'] == new_layout
 
-    @vcr.use_cassette(file_test_cassette('test_delete.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_delete.yaml'))
     def test_delete(self):
         dashboard = self.project.Dashboard(dashboard_id)
         widget = dashboard.Widget.create(
@@ -87,12 +78,12 @@ class TestResources(object):
         # assume that if server returns {} without error then delete was successful
         assert len(response) == 0
 
-    @vcr.use_cassette(file_test_cassette('test_sql_query.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_sql_query.yaml'))
     def test_sql_query(self):
         result = self.project.query_sql(app_id, 'select * from %s limit 2;' % sql_table)
         assert result.loc[0, 'field_a'] == 1
 
-    @vcr.use_cassette(file_test_cassette('test_dynamic_query.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_dynamic_query.yaml'))
     def test_dynamic_query(self):
         metric = "666571902:contract_data_value"
         dimension = "contract_data_category-category"

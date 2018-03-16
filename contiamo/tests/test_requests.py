@@ -6,21 +6,14 @@ import pytest
 import vcr
 import yaml
 
+from . import utils
 from contiamo.data import DataClient, select_date_columns, select_int_columns, preformat
 from contiamo.public import query
 from contiamo.errors import InvalidRequestError
 
 
-def file_test_data(filename):
-    return os.path.join(os.path.dirname(__file__), 'data', filename)
-
-
-def file_test_cassette(filename):
-    return os.path.join(os.path.dirname(__file__), 'cassettes', filename)
-
-
 try:
-    config = yaml.safe_load(open(file_test_data('test_config.yml')))
+    config = yaml.safe_load(open(utils.file_test_data('test_config.yml')))
 except FileNotFoundError:
     raise RuntimeError("Test config file not found. Email brandon@contiamo.com.")
 
@@ -65,35 +58,35 @@ class TestRequests(object):
         })
         assert df.equals(expected)
 
-    @vcr.use_cassette(file_test_cassette('test_purge.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_purge.yaml'))
     def test_purge(self):
         response = data_client.purge()
         assert 'status' in response
         assert response['status'] == 'ok'
 
-    @vcr.use_cassette(file_test_cassette('test_discover.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_discover.yaml'))
     def test_discover(self):
         # need to purge data before discovering
-        if not os.path.isfile(file_test_cassette('test_discover.yaml')):
+        if not os.path.isfile(utils.file_test_cassette('test_discover.yaml')):
             data_client.purge()
-        response = data_client.discover(filename=file_test_data('mock_data.csv'))
+        response = data_client.discover(filename=utils.file_test_data('mock_data.csv'))
         assert 'status' in response
         assert response['status'] == 'ok'
 
-    @vcr.use_cassette(file_test_cassette('test_upload.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_upload.yaml'))
     def test_upload(self):
-        response = data_client.upload(filename=file_test_data('mock_data.csv'))
+        response = data_client.upload(filename=utils.file_test_data('mock_data.csv'))
         assert 'status' in response
         assert response['status'] == 'ok'
 
-    @vcr.use_cassette(file_test_cassette('test_upload.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_upload.yaml'))
     def test_upload_dataframe(self):
         df = pd.DataFrame({'a': [1, 3], 'b': [2, 4]})
         response = data_client.upload(dataframe=df)
         assert 'status' in response
         assert response['status'] == 'ok'
 
-    @vcr.use_cassette(file_test_cassette('test_query.yaml'))
+    @vcr.use_cassette(utils.file_test_cassette('test_query.yaml'))
     def test_query(self):
         response = query(query_id, api_base=api_base)
         assert isinstance(response, pd.DataFrame)
@@ -113,4 +106,4 @@ class TestErrors(object):
     def test_two_arguments(self):
         df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
         with pytest.raises(InvalidRequestError):
-            data_client.upload(dataframe=df, filename=file_test_data('mock_data.csv'))
+            data_client.upload(dataframe=df, filename=utils.file_test_data('mock_data.csv'))
