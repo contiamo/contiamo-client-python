@@ -107,11 +107,14 @@ class RetrievableResource(Resource):
 
     @classmethod
     def list(cls, instantiate=False):
-        resources = cls.request('get', cls.class_url())
-        if type(resources) is dict:
+        response = cls.request('get', cls.class_url())
+        # resources can be returned as list or dictionary
+        if type(response) is list:
+            resources = response
+        else:
             try:
-                resources = resources['resources']
-            except KeyError as e:
+                resources = response['resources']
+            except (TypeError, KeyError) as e:
                 raise_response_error(e, response, logger)
         if instantiate:
             return cls.instantiate_list(resources)
