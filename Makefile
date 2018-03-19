@@ -3,6 +3,9 @@
 requirements:
 	pip install -r requirements.txt
 
+requirements-dev:
+	pip install -r requirements-dev.txt
+
 install:
 	python setup.py install
 

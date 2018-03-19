@@ -2,7 +2,7 @@ language: python
 python:
 - 3.6
 
-install: make requirements install
+install: make requirements-dev install
 
 script: make lint test
 
