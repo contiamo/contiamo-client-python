@@ -1,11 +1,11 @@
 language: python
 python:
 - 3.6
-
 install: make requirements-dev install
-
 script: make lint test
-
 notifications:
   slack:
     secure: QzVVelrFvvMhF+vdHbN1mhJYiDzHkyqVXgqNItC+/vqbQLh48cjM+/MQ4jJKH50lP8C8mQCYUwdLCv+mK2uRVjd9GcMwbkeSp225PvWs4qXSUPZooRrQ500CDbb+wfqIp+b7Z1fjW9fyjrae4vtWi4NUSFILnPeruL3c3CYtlJ71YeJuj6lAArbTG9lyQWVce2wlXdmIui3vSmZGyuKMQ2eFuDo80e8aYkGTXAIpPtWKS/9+VN4Xf9Ftul2EJxhG4+Ga6Sm45oZD15C1r54lvGL5OYNkBn2rQmOIdpxBDOeU82Dw3d6f7RGj2jtObX4OWP5b9OMKXkwPyucagPIQNWjNXOUnAZL176u9XsfLfTVN45m/qyQuViIm2bot/pKMpvYDVaBCakx/r5WVKaqruakgpTAHNW3pl64BsGQc+9p1hBmZ4vqq2Vu/IR2Q0dJJpdbUngSQ/omS2I7oz9v24us4+UPrJz/uR4e+wR25uJLJflc9C/PoQ3TUPjNFLXk7vkymF2HPMWlOeGAMK8mcRbutA00iPfVxPEOVrJ/H/rOY81EoEj8LlmCpTHTWCBKYI3LUqp2ERNlmzgEi5nJu5NIlT1Qmtsv0/oMEg4/iO7OXA/KBX5eIeK6H+q9/2rtxIZxxQ4WM8/fruPBYDKBpc4xEZ/sCfyd1KGU74TX3XeA=
+before_install:
+- openssl aes-256-cbc -K $encrypted_763da1033f72_key -iv $encrypted_763da1033f72_iv
+  -in contiamo/tests/data/test_config.yml.enc -out contiamo/tests/data/test_config.yml -d
