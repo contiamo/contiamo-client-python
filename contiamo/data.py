@@ -1,18 +1,15 @@
 import datetime
+import logging
+import numpy
+import pandas as pd
 import tempfile
-
-try:
-    import pandas
-    import numpy
-except ImportError:
-    pandas = None
 
 from contiamo.http_client import HTTPClient
 from contiamo.utils import contract_url_template_from_identifier, raise_response_error
 from contiamo.utils import get_file_extension
 from contiamo.errors import InvalidRequestError
 
-import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -115,7 +112,7 @@ class DataClient:
         if dataframe is not None and filename is not None:
             raise InvalidRequestError(
                 'Ambiguous request: You cannot provide both a dataframe and a file to upload.')
-        if dataframe is not None and not (pandas and isinstance(dataframe, pandas.DataFrame)):
+        if dataframe is not None and not isinstance(dataframe, pd.DataFrame):
             raise InvalidRequestError(
                 'The argument you passed is a %s, not a pandas dataframe:\n%s'
                 % (type(dataframe).__name__, str(dataframe)))

@@ -1,10 +1,7 @@
 import os
+import pandas as pd
 
-try:
-    import pandas as pd
-    from contiamo.dateparser import DateParser
-except ImportError:
-    pd = None
+from contiamo.dateparser import DateParser
 
 
 ###
@@ -69,10 +66,7 @@ def raise_json_error(e, response):
 
 
 def parse_query_result(json_response, parse_dates=True, use_column_names=True):
-    if not pd:
-        return json_response
-
-    # This function is not safe (only works with floats) so we keep it in the local namespace.
+    # The function below is not safe (only works with floats) so we keep it in the local namespace.
     def is_integer(a):
         return a.is_integer()
 
