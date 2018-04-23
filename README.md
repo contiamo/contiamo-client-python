@@ -4,14 +4,12 @@
 
 The `contiamo` API library in Python provides access to Contiamo's API functionality through a simple interface.
 
-*In order to run the examples below, you need to get the API key and resource tokens from the project.*
+_In order to run the examples below, you need to get the API key and resource tokens from the project._
 
 ### Installation
 
 ```
-git clone https://github.com/Contiamo/contiamo-client-python.git
-cd contiamo-client-python
-pip install .
+pip install contiamo
 ```
 
 ### Using the contiamo client
@@ -70,14 +68,14 @@ Possible alternatives not using the `pandas` library are commented out above.
 
 ### Available operations
 
-| Resource     | Create | List | Fetch / Retrieve | Modify | Destroy | Other actions   | Child Resources       |
-|--------------|--------|------|------------------|--------|---------|-----------------|-----------------------|
-| client       |        |      |                  |        |         |                 | project               |
-| project      |        |      |                  |        |         | query_sql       | app, dashboard        |
-| dashboard    | x      | x    | x                | x      |         |                 | widget                |
-| widget       | x      | x    | x                | x      |         |                 |                       |
-| app          |        | x    | x                |        |         |                 | contract              |
-| contract     | x      | x    | x                | x      | x       |                 |                       |
+| Resource  | Create | List | Fetch / Retrieve | Modify | Destroy | Other actions | Child Resources |
+| --------- | ------ | ---- | ---------------- | ------ | ------- | ------------- | --------------- |
+| client    |        |      |                  |        |         |               | project         |
+| project   |        |      |                  |        |         | query_sql     | app, dashboard  |
+| dashboard | x      | x    | x                | x      |         |               | widget          |
+| widget    | x      | x    | x                | x      |         |               |                 |
+| app       |        | x    | x                |        |         |               | contract        |
+| contract  | x      | x    | x                | x      | x       |               |                 |
 
 ### Support
 
