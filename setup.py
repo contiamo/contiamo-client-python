@@ -11,7 +11,11 @@ except ImportError:
 path, script = os.path.split(sys.argv[0])
 os.chdir(os.path.abspath(path))
 
-install_requires = []
+install_requires = [
+    'isoweek >= 1.3',
+    'numpy >= 1.14',
+    'pandas >= 0.22',
+]
 
 if sys.version_info < (3,):
     warnings.warn(
@@ -41,7 +45,7 @@ setup(
     # package_data={'contiamo': ['data/ca-certificates.crt']},
     install_requires=install_requires,
     # test_suite='contiamo.test.all',
-    tests_require=['unittest'],  # unittest2
+    tests_require=['pytest >= 3.4'],
     use_2to3=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
