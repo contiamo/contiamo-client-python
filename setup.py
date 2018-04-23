@@ -36,7 +36,7 @@ setup(
     # long_description=long_description,
     author='Contiamo',
     author_email='support@contiamo.com',
-    url='https://github.com/Contiamo/contiamo-client-python',
+    url='https://github.com/contiamo/contiamo-client-python',
     packages=['contiamo', 'contiamo.tests'],
     # package_data={'contiamo': ['data/ca-certificates.crt']},
     install_requires=install_requires,
