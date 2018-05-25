@@ -115,7 +115,7 @@ class DataClient:
         if dataframe is not None and not isinstance(dataframe, pd.DataFrame):
             raise InvalidRequestError(
                 'The argument you passed is a %s, not a pandas dataframe:\n%s'
-                % (type(dataframe).__name__, str(dataframe)))
+                % (type(dataframe).__name__, str(dataframe)[:1000]))
 
         if dataframe is not None:
             return self.post_df(url, dataframe, include_index)
