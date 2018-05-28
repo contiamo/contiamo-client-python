@@ -152,7 +152,9 @@ class DataClient:
             for n in range(nb_chunks):
                 tmp = dataframe.iloc[n*chunk_size:(n+1)*chunk_size]
                 try:
-                    _ = self._post_data(url, tmp, filename, include_index)
+                    # we ignore the response, all that matters is the response code
+                    # anything other than a 200 will raise an error
+                    self._post_data(url, tmp, filename, include_index)
                 except ContiamoException as e:
                     warnings.warn(
                         'Request #%d has failed, %d rows have been uploaded so far.'
