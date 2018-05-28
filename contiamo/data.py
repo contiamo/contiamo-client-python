@@ -1,13 +1,15 @@
 import datetime
 import logging
+import tempfile
+import warnings
+
 import numpy
 import pandas as pd
-import tempfile
 
 from contiamo.http_client import HTTPClient
 from contiamo.utils import contract_url_template_from_identifier, raise_response_error
 from contiamo.utils import get_file_extension
-from contiamo.errors import InvalidRequestError
+from contiamo.errors import ContiamoException, InvalidRequestError
 
 
 logger = logging.getLogger(__name__)
@@ -114,8 +116,8 @@ class DataClient:
                 'Ambiguous request: You cannot provide both a dataframe and a file to upload.')
         if dataframe is not None and not isinstance(dataframe, pd.DataFrame):
             raise InvalidRequestError(
-                'The argument you passed is a %s, not a pandas dataframe:\n%s'
-                % (type(dataframe).__name__, str(dataframe)[:1000]))
+                'The argument you passed is a %s, not a pandas dataframe.'
+                % type(dataframe).__name__)
 
         if dataframe is not None:
             return self.post_df(url, dataframe, include_index)
@@ -137,10 +139,29 @@ class DataClient:
         url = self.url_template.format(action='upload/discover')
         return self._post_data(url, dataframe, filename, include_index)
 
-    def upload(self, dataframe=None, filename=None, include_index=False):
+    def upload(self, dataframe=None, filename=None, include_index=False, chunk_size=100000):
         if dataframe is not None:
             dataframe = dataframe.copy()
         url = self.url_template.format(action='upload/process')
+
+        # if dataframe is above chunk_size, upload in chunks
+        if chunk_size < 1:
+            raise InvalidRequestError('Chunk size cannot be less than 1.')
+        if dataframe is not None and len(dataframe) > chunk_size:
+            nb_chunks = (len(dataframe) - 1) // chunk_size + 1
+            for n in range(nb_chunks):
+                tmp = dataframe.iloc[n*chunk_size:(n+1)*chunk_size]
+                try:
+                    _ = self._post_data(url, tmp, filename, include_index)
+                except ContiamoException as e:
+                    warnings.warn(
+                        'Request #%d has failed, %d rows have been uploaded so far.'
+                        % (n+1, n*chunk_size)
+                    )
+                    raise
+            # if no errors have been raised, simulate a response:
+            return {'status': 'ok', 'requests_sent': nb_chunks}
+
         return self._post_data(url, dataframe, filename, include_index)
 
     def purge(self):
