@@ -6,10 +6,9 @@ import warnings
 import numpy
 import pandas as pd
 
-from contiamo.http_client import HTTPClient
-from contiamo.utils import contract_url_template_from_identifier, raise_response_error
-from contiamo.utils import get_file_extension
 from contiamo.errors import ContiamoException, InvalidRequestError
+from contiamo.http_client import HTTPClient
+from contiamo.utils import contract_url_template_from_identifier, raise_response_error, get_file_extension
 
 
 logger = logging.getLogger(__name__)
@@ -53,6 +52,13 @@ def preformat(df):
     for col in int_cols:
         # pandas assignment by index will fill NaN values back in their original locations
         df[col] = df.loc[df[col].notnull(), col].astype(int).astype(str)
+
+
+def slice_in_chunks(length, chunk_size):
+    if chunk_size < 1:
+        raise InvalidRequestError('Chunk size cannot be less than 1.')
+    nb_chunks = (length - 1) // chunk_size + 1
+    return [slice(n * chunk_size, (n+1) * chunk_size) for n in range(nb_chunks)]
 
 
 class DataClient:
@@ -156,23 +162,19 @@ class DataClient:
 
         # if dataframe is above chunk_size, upload in chunks
         if dataframe is not None and chunk_size is not None and len(dataframe) > chunk_size:
-            if chunk_size < 1:
-                raise InvalidRequestError('Chunk size cannot be less than 1.')
-            nb_chunks = (len(dataframe) - 1) // chunk_size + 1
-            for n in range(nb_chunks):
-                tmp = dataframe.iloc[n*chunk_size:(n+1)*chunk_size]
+            chunk_slices = slice_in_chunks(len(dataframe), chunk_size)
+            for idx, sl in enumerate(chunk_slices):
                 try:
                     # we ignore the response, all that matters for uploads is the response code
                     # anything other than a 200 will raise an error
-                    self._post_data(url, tmp, filename, include_index)
+                    self._post_data(url, dataframe.iloc[sl], filename, include_index)
                 except ContiamoException as e:
                     warnings.warn(
-                        'Request #%d has failed, %d rows have been uploaded so far.'
-                        % (n+1, n*chunk_size)
-                    )
+                        'Request #%d of %d has failed, %d rows have been uploaded so far.'
+                        % (idx+1, len(chunk_slices), idx*chunk_size))
                     raise e
             # if no errors have been raised, simulate a response:
-            return {'status': 'ok', 'requests_sent': nb_chunks}
+            return {'status': 'ok', 'requests_sent': len(chunk_slices)}
 
         return self._post_data(url, dataframe, filename, include_index)
 
