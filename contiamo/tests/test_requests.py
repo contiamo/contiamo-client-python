@@ -109,6 +109,7 @@ class TestErrors:
             data_client.upload(dataframe=df, filename=utils.file_test_data('mock_data.csv'))
 
     def test_invalid_chunk_size(self):
+        """Naive regression test to make sure the chunk upload feature is not removed."""
         df = pd.DataFrame({'a': [1, 2, 3], 'b': [4, 5, 6]})
         with pytest.raises(InvalidRequestError):
             data_client.upload(dataframe=df, chunk_size=0)

@@ -38,7 +38,8 @@ def select_int_columns(df):
 
 def preformat(df):
     """
-    Preprocess to improve default JSON serialization:
+    Preprocess to improve default JSON serialization.
+
     - dates: serialize without time when represented as datetime
     - integers: serialize as string when represented as float
     """
@@ -139,20 +140,29 @@ class DataClient:
         url = self.url_template.format(action='upload/discover')
         return self._post_data(url, dataframe, filename, include_index)
 
-    def upload(self, dataframe=None, filename=None, include_index=False, chunk_size=100000):
+    def upload(self, dataframe=None, filename=None, include_index=False, chunk_size=None):
+        """Upload data from dataframe or file to data contract.
+
+        - dataframe: pandas dataframe to be uploaded
+        - filename: name of CSV or JSONL file containing the data to upload
+            (file extension must be .csv or .jsonl, case insensitive)
+        - include_index: if True, the index of the dataframe will be uploaded as well
+        - chunk_size: if integer >= 1 is specified, the data will be uploaded in chunks
+            (100k is a good default value for large data sets)
+        """
         if dataframe is not None:
             dataframe = dataframe.copy()
         url = self.url_template.format(action='upload/process')
 
         # if dataframe is above chunk_size, upload in chunks
-        if chunk_size < 1:
-            raise InvalidRequestError('Chunk size cannot be less than 1.')
-        if dataframe is not None and len(dataframe) > chunk_size:
+        if dataframe is not None and chunk_size is not None and len(dataframe) > chunk_size:
+            if chunk_size < 1:
+                raise InvalidRequestError('Chunk size cannot be less than 1.')
             nb_chunks = (len(dataframe) - 1) // chunk_size + 1
             for n in range(nb_chunks):
                 tmp = dataframe.iloc[n*chunk_size:(n+1)*chunk_size]
                 try:
-                    # we ignore the response, all that matters is the response code
+                    # we ignore the response, all that matters for uploads is the response code
                     # anything other than a 200 will raise an error
                     self._post_data(url, tmp, filename, include_index)
                 except ContiamoException as e:
@@ -160,7 +170,7 @@ class DataClient:
                         'Request #%d has failed, %d rows have been uploaded so far.'
                         % (n+1, n*chunk_size)
                     )
-                    raise
+                    raise e
             # if no errors have been raised, simulate a response:
             return {'status': 'ok', 'requests_sent': nb_chunks}
 
