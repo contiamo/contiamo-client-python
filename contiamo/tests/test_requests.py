@@ -1,3 +1,4 @@
+import itertools
 import os
 
 import numpy as np
@@ -7,9 +8,9 @@ import vcr
 import yaml
 
 from . import utils
-from contiamo.data import DataClient, select_date_columns, select_int_columns, preformat
-from contiamo.public import query
+from contiamo.data import DataClient, select_date_columns, select_int_columns, preformat, slice_in_chunks
 from contiamo.errors import InvalidRequestError
+from contiamo.public import query
 
 
 try:
@@ -90,6 +91,13 @@ class TestRequests:
     def test_query(self):
         response = query(query_id, api_base=api_base)
         assert isinstance(response, pd.DataFrame)
+
+    def test_slice_in_chunks(self):
+        def reconstitute_list(l, slices):
+            return list(itertools.chain.from_iterable((l[sl] for sl in slices)))
+        for length, chunk_size in zip([113, 100, 100, 1, 0], [7, 100, 1, 10, 10]):
+            data = list(range(length))  # we test slicing on a list
+            assert data == reconstitute_list(data, slice_in_chunks(len(data), chunk_size))
 
 
 class TestErrors:
