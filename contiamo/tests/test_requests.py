@@ -96,8 +96,8 @@ class TestRequests:
         def reconstitute_list(l, slices):
             return list(itertools.chain.from_iterable((l[sl] for sl in slices)))
         for length, chunk_size in zip([113, 100, 100, 1, 0], [7, 100, 1, 10, 10]):
-            l = list(range(length))
-            assert l == reconstitute_list(l, slice_in_chunks(len(l), chunk_size))
+            data = list(range(length))  # we test slicing on a list
+            assert data == reconstitute_list(data, slice_in_chunks(len(data), chunk_size))
 
 
 class TestErrors:
