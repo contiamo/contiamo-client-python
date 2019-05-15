@@ -20,7 +20,7 @@ def query_url_from_identifier(query_identifier, api_base):
     """query:query_type:project_id:query_id:token"""
     try:
         _, project_id, query_id, token = query_identifier.split(':')[1:]
-    except ValueError as e:
+    except ValueError:
         # backward compatibility
         try:
             project_id, query_id, token = query_identifier.split(':')[1:]
@@ -109,7 +109,7 @@ def parse_query_result(json_response, parse_dates=True, use_column_names=True):
                         try:
                             column_names[idx] = column['app_data']['name'] + \
                                 ': ' + column['name']
-                        except KeyError as e:
+                        except KeyError:
                             # calculations do not have an app_data
                             pass
             df.columns = column_names
