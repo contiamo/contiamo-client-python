@@ -7,8 +7,6 @@ import warnings
 from pip._internal.download import PipSession
 from pip._internal.req import parse_requirements
 
-from version import VERSION
-
 
 path, script = os.path.split(sys.argv[0])
 os.chdir(os.path.abspath(path))
@@ -28,6 +26,7 @@ if sys.version_info < (3,):
 
 # Don't import contiamo module here, since deps may not be installed
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'contiamo'))
+from version import VERSION
 
 setup(
     name='contiamo',
