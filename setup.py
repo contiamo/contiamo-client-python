@@ -1,21 +1,21 @@
 from distutils.command.build_py import build_py
 import os
+from setuptools import setup, find_packages
 import sys
 import warnings
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from pip._internal.download import PipSession
+from pip._internal.req import parse_requirements
+
 
 path, script = os.path.split(sys.argv[0])
 os.chdir(os.path.abspath(path))
 
-install_requires = [
-    'isoweek >= 1.3',
-    'numpy >= 1.14',
-    'pandas >= 0.22',
-]
+requirements = parse_requirements('requirements.txt', session=PipSession())
+test_requirements = parse_requirements('requirements-dev.txt', session=PipSession())
+
+requirements = [str(x.req) for x in requirements]
+test_requirements = [str(x.req) for x in test_requirements]
 
 if sys.version_info < (3,):
     warnings.warn(
@@ -23,10 +23,6 @@ if sys.version_info < (3,):
         'If you have any questions, please file an issue on Github or '
         'contact us at support@contiamo.com.',
         DeprecationWarning)
-    install_requires.append('requests >= 0.8.8, < 0.10.1')
-    install_requires.append('ssl')
-else:
-    install_requires.append('requests >= 0.8.8')
 
 # Don't import contiamo module here, since deps may not be installed
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'contiamo'))
@@ -37,15 +33,14 @@ setup(
     cmdclass={'build_py': build_py},
     version=VERSION,
     description='Contiamo Python client',
-    # long_description=long_description,
     author='Contiamo',
     author_email='support@contiamo.com',
     url='https://github.com/contiamo/contiamo-client-python',
-    packages=['contiamo', 'contiamo.tests'],
-    # package_data={'contiamo': ['data/ca-certificates.crt']},
-    install_requires=install_requires,
-    # test_suite='contiamo.test.all',
-    tests_require=['pytest >= 3.4'],
+    packages=find_packages(),
+    include_package_data=True,
+    install_requires=requirements,
+    test_suite='tests',
+    tests_require=test_requirements,
     use_2to3=True,
     classifiers=[
         "Development Status :: 5 - Production/Stable",

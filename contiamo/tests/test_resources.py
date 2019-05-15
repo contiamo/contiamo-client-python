@@ -7,7 +7,7 @@ from contiamo.resources import Client
 
 try:
     config = yaml.safe_load(open(utils.file_test_data('test_config.yml')))
-except FileNotFoundError:
+except OSError:
     raise RuntimeError("Test config file not found. Email brandon@contiamo.com.")
 
 api_base = config['api_base']
