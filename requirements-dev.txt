@@ -2,4 +2,5 @@
 flake8>=3.5
 pytest>=3.4
 responses>=0.8
+twine>=1.13
 vcrpy>=1.11
